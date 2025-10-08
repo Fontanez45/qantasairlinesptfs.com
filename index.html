@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qantas Roblox</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+    }
+    body.black-text * {
+      color: black !important;
+    }
+    body.red-text * {
+      color: red !important;
+    }
+    header {
+      background-color: #d6001c;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+    }
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: 0;
+    }
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 2;
+    }
+    .hero-text h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .hero-text p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .hero-text button {
+      background-color: #ffffff;
+      color: #d6001c;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .dots {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+    }
+    .dot {
+      height: 12px;
+      width: 12px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .dot.active {
+      background-color: #d6001c;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background-color: #fff;
+      border-bottom: 2px solid #ddd;
+    }
+    .tab {
+      padding: 15px 30px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #d6001c;
+      border-bottom: 3px solid transparent;
+    }
+    .tab.active {
+      border-bottom: 3px solid #d6001c;
+      background-color: #f0f0f0;
+    }
+    .tab-content {
+      display: none;
+      padding: 30px;
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .tab-content label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .tab-content input, .tab-content select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+    .tab-content button {
+      background-color: #d6001c;
+      color: white;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    #bookNowBtn {
+      text-align: center;
+      margin: 20px auto;
+    }
+    .glow-btn {
+      background-color: orange;
+      color: black;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 15px orange;
+      transition: all 0.3s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 25px #ff6600;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="black-text">
+
+
+<header class="qantas-tab">
+  <div><strong>Qantas Roblox</strong></div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="checking.html">Manage Booking</a>
+    <a href="https://discord.gg/5Z77R4TE">Discord</a>
+    <a href="">Menu</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="slide active"><img src="https://i.imgur.com/zLqZVO3.png" alt="Slide 1"></div>
+  <div class="slide"><img src="https://i.ytimg.com/vi/I4qukPcQ2Gk/sddefault.jpg" alt="Slide 2"></div>
+  <div class="slide"><img src="https://i.ytimg.com/vi/8PUpRm55wZg/maxresdefault.jpg" alt="Slide 3"></div>
+
+  <div class="hero-text">
+    <h1>Australia starts with Qantas Roblox</h1>
+    <p>Discover Australia with Qantas Roblox — whether you're visiting friends, flying crew, or exploring the skies.</p>
+    <button onclick="showTab('book')">DISCOVER AUSTRALIA IN THE SKY</button>
+  </div>
+
+  <div class="dots">
+    <span class="dot active" onclick="showSlide(0)"></span>
+    <span class="dot" onclick="showSlide(1)"></span>
+    <span class="dot" onclick="showSlide(2)"></span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('book')">Book a trip</div>
+  <div class="tab" onclick="showTab('status')">Flight status</div>
+  <div class="tab" onclick="showTab('credit')">Your Flight Credit</div>
+</div>
+
+<div id="book" class="tab-content active">
+  <h2>Available Flights</h2>
+  <div id="bookNowBtn"></div>
+</div>
+
+<div id="countdown" style="font-size:24px; font-weight:bold; margin-top:20px;"></div>
+<p id="teaser" style="font-size:18px; color:#d6001c; margin-top:10px;">
+  👻 Something spooky is landing soon... Qantas is going full Halloween.
+</p>
+
+<div id="status" class="tab-content">
+  <h2>Check Flight Status</h2>
+  <input id="bookingRef" type="text" placeholder="Enter Reference Code" />
+  <input id="lastName" type="text" placeholder="Enter Discord Name" />
+  <button onclick="checkBookingStatus()">Check Status</button>
+  <div id="statusInfo" style="margin-top:20px;"></div>
+</div>
+
+<div id="credit" class="tab-content">
+  <h2>Use Your Flight Credit</h2>
+  <input type="text" placeholder="Enter flight credit code" />
+  <button class="glow-btn">Apply Credit</button>
+</div>
+
+<script>
+let selectedFlight = {
+  from: "SYD",
+  to: "MIA",
+  date: "2025-11-10",
+  flightCode: "QF872",
+  time: "2:30 PM",
+  gate: "A12",
+  aircraft: "Airbus A380"
+};
+
+function showSlide(index) {
+  const slides = document.querySelectorAll(".slide");
+  const dots = document.querySelectorAll(".dot");
+  slides.forEach((slide, i) => {
+    slide.classList.remove("active");
+    dots[i].classList.remove("active");
+  });
+  slides[index].classList.add("active");
+  dots[index].classList.add("active");
+}
+
+let slideIndex = 0;
+setInterval(() => {
+  slideIndex = (slideIndex + 1) % 3;
+  showSlide(slideIndex);
+}, 5000);
+
+function showTab(tabId) {
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+function loadLocalFlight() {
+  const bookNowBtn = document.getElementById("bookNowBtn");
+  bookNowBtn.innerHTML = `
+    <div style="background:#fff; border:2px solid #007bff; padding:20px; border-radius:10px;">
+      <h3>Flight ${selectedFlight.flightCode}</h3>
+      <p><strong>From:</strong> ${selectedFlight.from}</p>
+      <p><strong>To:</strong> ${selectedFlight.to}</p>
+      <p><strong>Departure Time:</strong> ${selectedFlight.date}, ${selectedFlight.time}</p>
+      <p><strong>Aircraft:</strong> ${selectedFlight.aircraft}</p>
+      <p><strong>Gate:</strong> ${selectedFlight.gate}</p>
+      <button onclick="confirmBooking()" class="glow-btn">Book Now</button>
+    </div>
+  `;
+}
+
+function confirmBooking() {
+  localStorage.setItem("selectedFlight", JSON.stringify(selectedFlight));
+  localStorage.removeItem("bookingInfo");
+  window.location.href = "checking.html";
+}
+
+function checkBookingStatus() {
+  const ref = document.getElementById("bookingRef").value.trim();
+  const name = document.getElementById("lastName").value.trim();
+  const booking = JSON.parse(localStorage.getItem("bookingInfo"));
+  const statusInfo = document.getElementById("statusInfo");
+
+  statusInfo.innerHTML = "";
+
+  if (!ref || !name) {
+    statusInfo.innerHTML = `
+      <div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">
+        ❌ Please enter both your reference code and Discord name.
+      </div>
+    `;
+    return;
+  }
+
+  if (!booking || !booking.referenceCode || !booking.name) {
+    statusInfo.innerHTML = `
+      <div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">
+        ❌ No booking found. Try again.
+      </div>
+    `;
+    return;
+  }
+
+  if (booking.referenceCode !== ref || booking.name.toLowerCase() !== name.toLowerCase()) {
+    statusInfo.innerHTML = `
+      <div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">
+        ❌ Invalid reference code or Discord name.
+      </div>
+    `;
+    return;
+  }
+
+  showTab("status");
+  statusInfo.innerHTML = `
+    <div style="background:#fff; border:2px solid #007bff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); max-width:500px; margin:20px auto; font-family:'Segoe UI', sans-serif;">
+      <h3 style="margin-top:0;">🛫 Flight Status</h3>
+      <p><strong>Passenger:</strong> ${booking.name}</p>
+      <p><strong>Flight:</strong> ${booking.flightCode}</p>
+      <p><strong>From:</strong> ${booking.from}</p>
+      <p><strong>To:</strong> ${booking.to}</p>
+      <p><strong>Date:</strong> ${booking.date}</p>
+      <p><strong>Departure Time:</strong> ${booking.time}</p>
+      <p><strong>Gate:</strong> ${booking.gate}</p>
+      <p><strong>Seat:</strong> ${booking.seat}</p>
+      <p><strong>Baggage:</strong> ${booking.bag}</p>
+      <p><strong>Aircraft:</strong> ${booking.aircraft}</p>
+      <p><strong>Reference Code:</strong> <span style="font-weight:bold; color:#d6001c;">${booking.referenceCode}</span></p>
+    </div>
+  `;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadLocalFlight();
+});
+
+// 🎃 Countdown to 5 days from now at 3:44 PM
+const countdownTarget = new Date();
+countdownTarget.setDate(countdownTarget.getDate() + 5);
+countdownTarget.setHours(15, 44, 0, 0); // 3:44 PM
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const distance = countdownTarget.getTime() - now;
+
+  if (distance <= 0) {
+    document.getElementById("countdown").innerHTML = "🎃 Website Updated!";
+    document.getElementById("teaser").innerHTML = "🕸️ Halloween Mode Activated!";
+    activateHalloweenMode();
+    clearInterval(timer);
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("countdown").innerHTML =
+    `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until Halloween Qantas lands`;
+}
+
+function activateHalloweenMode() {
+  document.body.classList.remove("black-text");
+  document.body.classList.add("red-text");
+  document.body.style.backgroundColor = "#1a1a1a";
+  document.body.style.fontFamily = "'Creepster', cursive";
+
+  const corners = ["top-left", "top-right", "bottom-left", "bottom-right"];
+  corners.forEach(pos => {
+    const web = document.createElement("img");
+    web.src = "https://png.pngtree.com/png-vector/20220610/ourmid/pngtree-corner-spider-web-icon-png-image_4963712.png";
+    web.alt = "Spiderweb";
+    web.style.position = "fixed";
+    web.style.width = "100px";
+    web.style.zIndex = "9999";
+    web.style.filter = "drop-shadow(0 0 10px orange)";
+    if (pos.includes("top")) web.style.top = "0";
+    if (pos.includes("bottom")) web.style.bottom = "0";
+    if (pos.includes("left")) web.style.left = "0";
+    if (pos.includes("right")) web.style.right = "0";
+    document.body.appendChild(web);
+  });
+
+  const tab = document.querySelector(".qantas-tab");
+  if (tab) {
+    tab.style.backgroundColor = "orange";
+    tab.style.boxShadow = "0 0 10px orange";
+  }
+
+  const teaser = document.getElementById("teaser");
+  if (teaser) {
+    teaser.style.color = "orange";
+    teaser.style.textShadow = "0 0 10px orange";
+    teaser.innerHTML = "🕸️ Halloween Mode Activated!";
+  }
+
+const pumpkinRow = document.createElement("div");
+  pumpkinRow.style.fontSize = "40px";
+  pumpkinRow.style.marginTop = "20px";
+  pumpkinRow.style.textAlign = "center";
+  pumpkinRow.innerHTML = "🎃 🎃 🎃 🎃 🎃";
+  document.body.appendChild(pumpkinRow);
+
+  const promoImage = document.createElement("div");
+  promoImage.style.margin = "30px auto";
+  promoImage.style.maxWidth = "600px";
+  promoImage.innerHTML = `
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz9vXpQzbFclTFXkWrLF2PIRpacnN9ZU5NzQ&s" alt="Halloween Promo" style="width:100%; border-radius:10px; box-shadow:0 0 20px orange;">
+  `;
+  document.body.appendChild(promoImage);
+
+  const spider = document.createElement("img");
+  spider.src = "your-spider-image-url.png";
+  spider.alt = "Spider";
+  spider.style.position = "fixed";
+  spider.style.bottom = "20px";
+  spider.style.right = "20px";
+  spider.style.width = "80px";
+  spider.style.zIndex = "9999";
+  spider.style.filter = "drop-shadow(0 0 10px orange)";
+  document.body.appendChild(spider);
+}
+
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+</body>
+</html>
+    
+
