@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("bagSelect").value = booking.bag;
     lockForm();
   } else {
+    localStorage.removeItem("bookingInfo"); // Clear old booking if flight changed
     unlockForm();
   }
 
@@ -238,7 +239,7 @@ function confirmBooking() {
           <path d="M26 0C11.64 0 0 11.64 0 26s11.64 26 26 26 26-11.64 26-26S40.36 0 26 0zm-4 36l-10-10 2.8-2.8L22 28.4l15.2-15.2L40 16l-18 20z"/>
         </svg>
       </div>
-      <p>✅ Booking Confirmed!</p>
+      <p>Booking Confirmed!</p>
       <p>Please fill out the reference sheet with this code ➕</p>
       <p style="font-weight:bold; font-size: 28px;">${refCode}</p>
     `;
@@ -277,9 +278,6 @@ function goBack() {
   }, 2000);
 }
 </script>
-
-
-
 
 
 </body>

@@ -266,22 +266,24 @@
 </div>
 
 <script>
-    window.addEventListener("load", () => {
-    setTimeout(() => {
-      const loader = document.getElementById("loading-screen");
-      if (loader) {
-        loader.style.display = "none";
-      }
-    }, 2000); // ⏳ 2 seconds delay
-  });
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const loader = document.getElementById("loading-screen");
+    if (loader) {
+      loader.style.display = "none";
+    }
+  }, 2000);
+});
+
 let selectedFlight = {
-  from: "SYD",
-  to: "MIA",
+  from: "Sydney (SYD)",
+  to: "Los Angeles (LAX)",
   date: "2025-11-10",
-  flightCode: "QF872",
+  flightCode: "QF666",
   time: "2:30 PM",
-  gate: "A12",
-  aircraft: "Airbus A380"
+  gate: "A1",
+  aircraft: "Boeing 787 Dreamliner",
+  status: "❌ Postponed" // Change to ✔ On Time, ❌ Cancelled, or ❌ Postponed
 };
 
 function showSlide(index) {
@@ -318,6 +320,7 @@ function loadLocalFlight() {
       <p><strong>Departure Time:</strong> ${selectedFlight.date}, ${selectedFlight.time}</p>
       <p><strong>Aircraft:</strong> ${selectedFlight.aircraft}</p>
       <p><strong>Gate:</strong> ${selectedFlight.gate}</p>
+      <p><strong>Status:</strong> ${selectedFlight.status}</p>
       <button onclick="confirmBooking()" class="glow-btn">Book Now</button>
     </div>
   `;
@@ -338,36 +341,29 @@ function checkBookingStatus() {
   statusInfo.innerHTML = "";
 
   if (!ref || !name) {
-    statusInfo.innerHTML = `
-      <div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">
-        ❌ Please enter both your reference code and Discord name.
-      </div>
-    `;
+    statusInfo.innerHTML = `<div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">❌ Please enter both your reference code and Discord name.</div>`;
     return;
   }
 
   if (!booking || !booking.referenceCode || !booking.name) {
-    statusInfo.innerHTML = `
-      <div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">
-        ❌ No booking found. Try again.
-      </div>
-    `;
+    statusInfo.innerHTML = `<div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">❌ No booking found. Try again.</div>`;
     return;
   }
 
   if (booking.referenceCode !== ref || booking.name.toLowerCase() !== name.toLowerCase()) {
-    statusInfo.innerHTML = `
-      <div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">
-        ❌ Invalid reference code or Discord name.
-      </div>
-    `;
+    statusInfo.innerHTML = `<div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">❌ Invalid reference code or Discord name.</div>`;
     return;
   }
 
   showTab("status");
+  const statusColor =
+    selectedFlight.status.includes("On Time") ? "#28a745" :
+    selectedFlight.status.includes("Delayed") ? "#ffc107" :
+    (selectedFlight.status.includes("Cancelled") || selectedFlight.status.includes("Postponed")) ? "#d6001c" : "#000";
+
   statusInfo.innerHTML = `
-    <div style="background:#fff; border:2px solid #007bff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); max-width:500px; margin:20px auto; font-family:'Segoe UI', sans-serif;">
-      <h3 style="margin-top:0;">🛫 Flight Status</h3>
+    <div style="background:#fff; border:2px solid #007bff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); max-width:500px; margin:20px auto;">
+      <h3>🛫 Flight Status</h3>
       <p><strong>Passenger:</strong> ${booking.name}</p>
       <p><strong>Flight:</strong> ${booking.flightCode}</p>
       <p><strong>From:</strong> ${booking.from}</p>
@@ -378,6 +374,7 @@ function checkBookingStatus() {
       <p><strong>Seat:</strong> ${booking.seat}</p>
       <p><strong>Baggage:</strong> ${booking.bag}</p>
       <p><strong>Aircraft:</strong> ${booking.aircraft}</p>
+      <p><strong>Status:</strong> <span style="color:${statusColor}; font-weight:bold;">${selectedFlight.status}</span></p>
       <p><strong>Reference Code:</strong> <span style="font-weight:bold; color:#d6001c;">${booking.referenceCode}</span></p>
     </div>
   `;
@@ -387,10 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadLocalFlight();
 });
 
-// 🎃 Countdown to 5 days from now at 3:44 PM
-const countdownTarget = new Date();
-countdownTarget.setDate(countdownTarget.getDate() + 5);
-countdownTarget.setHours(15, 44, 0, 0); // 3:44 PM
+const countdownTarget = new Date("2025-10-13T00:00:00");
 
 function updateCountdown() {
   const now = new Date().getTime();
@@ -435,20 +429,15 @@ function activateHalloweenMode() {
     document.body.appendChild(web);
   });
 
-  const tab = document.querySelector(".qantas-tab");
-  if (tab) {
-    tab.style.backgroundColor = "orange";
-    tab.style.boxShadow = "0 0 10px orange";
-  }
-
   const teaser = document.getElementById("teaser");
   if (teaser) {
     teaser.style.color = "orange";
     teaser.style.textShadow = "0 0 10px orange";
-    teaser.innerHTML = "🕸️ Halloween Mode Activated!";
+    teaser.innerHTML =
+        teaser.innerHTML = "🕸️ Halloween Mode Activated!";
   }
 
-const pumpkinRow = document.createElement("div");
+  const pumpkinRow = document.createElement("div");
   pumpkinRow.style.fontSize = "40px";
   pumpkinRow.style.marginTop = "20px";
   pumpkinRow.style.textAlign = "center";
@@ -478,7 +467,9 @@ const pumpkinRow = document.createElement("div");
 const timer = setInterval(updateCountdown, 1000);
 updateCountdown();
 </script>
-</body>
-</html>
+
+
+
     
+</body>
 
