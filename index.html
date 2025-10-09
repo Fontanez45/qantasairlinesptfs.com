@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
   <style>
 
+
     #loading-screen {
   position: fixed;
   top: 0;
@@ -201,6 +202,34 @@
 </head>
 <body class="white-text">
 
+
+  <div id="cookieConsent" style="
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: #222;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 9999;
+  display: none;
+">
+  🍪 This site uses cookies to improve your experience. By continuing, you accept our cookie policy.
+  <button onclick="acceptCookies()" style="
+    margin-left: 15px;
+    background: orange;
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  ">Accept</button>
+</div>
+
   <div id="loading-screen">
   <img src="https://gallery.yopriceville.com/downloadfullsize/send/3262" alt="Rolling Pumpkin" id="pumpkin">
 </div>
@@ -266,6 +295,37 @@
 </div>
 
 <script>
+
+
+function acceptCookies() {
+  setCookie("cookiesAccepted", "true", 365);
+  document.getElementById("cookieConsent").style.display = "none";
+}
+
+function checkCookieConsent() {
+  if (getCookie("cookiesAccepted") !== "true") {
+    document.getElementById("cookieConsent").style.display = "block";
+  }
+}
+
+// Reuse cookie functions from earlier
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+function getCookie(name) {
+  return document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=');
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+  }, '');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  checkCookieConsent();
+});
+
+
 window.addEventListener("load", () => {
   setTimeout(() => {
     const loader = document.getElementById("loading-screen");
