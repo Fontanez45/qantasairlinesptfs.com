@@ -273,6 +273,7 @@
 <div id="book" class="tab-content active">
   <h2>Available Flights</h2>
   <div id="bookNowBtn"></div>
+  
 </div>
 
 <div id="countdown" style="font-size:24px; font-weight:bold; margin-top:20px;"></div>
@@ -288,13 +289,91 @@
   <div id="statusInfo" style="margin-top:20px;"></div>
 </div>
 
-<div id="credit" class="tab-content">
-  <h2>Use Your Flight Credit</h2>
-  <input type="text" placeholder="Enter flight credit code" />
-  <button class="glow-btn">Apply Credit</button>
+<div id="credit" class="tab-content" style="display:flex; justify-content:center; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-top:3rem;">
+  <div style="flex:1; min-width:300px;">
+    <h2 style="color:#d6001c;">USE YOUR FLIGHT CREDIT</h2>
+    <input id="flightCreditCode" type="text" placeholder="Enter flight credit code" style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:6px; border:1px solid #ccc;" />
+    <button class="glow-btn" onclick="applyFlightCredit()" style="width:100%; padding:0.75rem; font-weight:bold;">Apply Credit</button>
+    <div id="creditLoader" style="display:none; margin-top:1rem; font-weight:bold; color:#007bff;">⏳ Checking credit...</div>
+  </div>
+
+  <div id="creditFeedback" style="flex:1; min-width:300px;"></div>
 </div>
 
+
+
+
 <script>
+
+function showTab(tabId) {
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+
+  const creditSection = document.getElementById("credit");
+  creditSection.style.display = tabId === "credit" ? "flex" : "none";
+}
+
+function applyFlightCredit() {
+  const code = document.getElementById("flightCreditCode").value.trim();
+  const feedback = document.getElementById("creditFeedback");
+  const loader = document.getElementById("creditLoader");
+
+  const validCredits = {
+    "QANTAS50": { amount: 50, perks: ["10% Discount"] },
+    "TESTING": { amount: 100, perks: ["20% Discount", "Free First-Class Upgrade"] },
+    "FLYVIP": { amount: 150, perks: ["30% Discount", "First-Class", "Lounge Access"] },
+    "OPEN25": { amount: 500, perks: ["25% Discount", "Free First-Class Upgrade" ] }
+  };
+
+  feedback.innerHTML = "";
+  loader.style.display = "block";
+
+  setTimeout(() => {
+    loader.style.display = "none";
+
+    if (!code || !validCredits[code]) {
+      localStorage.removeItem("flightCredit");
+      localStorage.removeItem("flightCreditUsed");
+      feedback.innerHTML = `
+        <div style="background:#fff3f3; border-left:6px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; box-shadow:0 0 10px rgba(214,0,28,0.3); animation: fadeIn 0.5s ease;">
+          <div style="font-size:2rem;">❌</div>
+          Invalid flight credit code<br>
+          <div style="font-size:2.5rem;">😢</div>
+        </div>
+      `;
+      return;
+    }
+
+    const credit = validCredits[code];
+    localStorage.setItem("flightCredit", JSON.stringify({ code, ...credit }));
+    localStorage.removeItem("flightCreditUsed");
+
+    feedback.innerHTML = `
+      <div style="background:#e6fff2; border-left:6px solid #28a745; padding:20px; border-radius:10px; color:#28a745; font-weight:bold; box-shadow:0 0 10px rgba(40,167,69,0.3); animation: fadeIn 0.5s ease;">
+        <div style="font-size:2rem;">✅</div>
+        Flight Credit Applied: <strong>$${credit.amount}</strong><br><br>
+        Perks Unlocked:<br>
+        ${credit.perks.map(p => `- ${p}`).join("<br>")}<br><br>
+        <button onclick="useFlightCredit()" style="margin-top:10px; padding:10px 20px; background:#007bff; color:white; border:none; border-radius:6px; font-weight:bold;">Use Credit</button>
+      </div>
+    `;
+  }, 2500);
+}
+
+function useFlightCredit() {
+  localStorage.setItem("flightCreditUsed", "true");
+
+  const feedback = document.getElementById("creditFeedback");
+  feedback.innerHTML = `
+    <div style="background:#fffbe6; border-left:6px solid #ffc107; padding:20px; border-radius:10px; color:#856404; font-weight:bold; box-shadow:0 0 10px rgba(255,193,7,0.3); animation: fadeIn 0.5s ease;">
+      <div style="font-size:2rem;">🎟️</div>
+      Flight credit marked as <strong>USED</strong>!<br>
+      You’ll see it applied in your booking.
+    </div>
+  `;
+}
 
 
 function acceptCookies() {
@@ -443,7 +522,6 @@ function checkBookingStatus() {
 document.addEventListener("DOMContentLoaded", () => {
   loadLocalFlight();
 });
-
 const countdownTarget = new Date("2025-10-13T00:00:00");
 
 function updateCountdown() {

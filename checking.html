@@ -133,6 +133,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const flight = JSON.parse(localStorage.getItem("selectedFlight"));
   const booking = JSON.parse(localStorage.getItem("bookingInfo"));
+  const credit = JSON.parse(localStorage.getItem("flightCredit"));
+  const creditUsed = localStorage.getItem("flightCreditUsed") === "true";
   const info = document.getElementById("flightInfo");
   const form = document.getElementById("bookingForm");
 
@@ -142,7 +144,27 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  info.innerHTML = `
+  if (credit && creditUsed) {
+    const creditMessage = document.createElement("div");
+    creditMessage.style.background = "#e6fff2";
+    creditMessage.style.borderLeft = "6px solid #28a745";
+    creditMessage.style.padding = "20px";
+    creditMessage.style.borderRadius = "10px";
+    creditMessage.style.color = "#28a745";
+    creditMessage.style.fontWeight = "bold";
+    creditMessage.style.boxShadow = "0 0 10px rgba(40,167,69,0.3)";
+    creditMessage.style.animation = "popIn 0.5s ease-out";
+    creditMessage.style.marginBottom = "20px";
+    creditMessage.innerHTML = `
+      <div style="font-size:2rem;">🎟️</div>
+      Flight Credit Used: <strong>$${credit.amount}</strong><br>
+      Perks Applied:<br>
+      ${credit.perks.map(p => `- ${p}`).join("<br>")}
+    `;
+    info.appendChild(creditMessage);
+  }
+
+  info.innerHTML += `
     <p>🛫 Flight ${flight.flightCode}</p>
     <p>From: ${flight.from}</p>
     <p>To: ${flight.to}</p>
@@ -160,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("bagSelect").value = booking.bag;
     lockForm();
   } else {
-    localStorage.removeItem("bookingInfo"); // Clear old booking if flight changed
+    localStorage.removeItem("bookingInfo");
     unlockForm();
   }
 
@@ -251,6 +273,7 @@ function confirmBooking() {
   }, 2500);
 }
 
+
 function cancelBooking() {
   localStorage.removeItem("bookingInfo");
 
@@ -279,6 +302,7 @@ function goBack() {
 }
 </script>
 
-
 </body>
 </html>
+
+          
