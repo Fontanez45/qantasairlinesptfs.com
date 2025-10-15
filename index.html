@@ -365,6 +365,8 @@
   <div id="creditFeedback" style="flex:1; min-width:300px;"></div>
 </div>
 
+
+
 <!-- Help Launcher -->
 <div id="help-launcher" onclick="openChat()" style="
 position: fixed;
@@ -527,9 +529,10 @@ function sendMessage() {
 
 
 
-<script>
 
-  
+
+
+<script>
 
   
 
@@ -631,7 +634,7 @@ window.addEventListener("load", () => {
   if (banner && consent !== "accepted" && consent !== "rejected") {
     setTimeout(() => {
       banner.classList.add("show");
-    }, 2500); // ⏱️ 1.5 second delay before fade-in
+    }, 3200); // ⏱️ 1.5 second delay before fade-in
   }
 });
 
@@ -754,6 +757,7 @@ function checkBookingStatus() {
 document.addEventListener("DOMContentLoaded", () => {
   loadLocalFlight();
 });
+
 const countdownTarget = new Date("2025-10-13T00:00:00");
 
 function updateCountdown() {
@@ -764,6 +768,7 @@ function updateCountdown() {
     document.getElementById("countdown").innerHTML = "🎃 Website Updated!";
     document.getElementById("teaser").innerHTML = "🕸️ Halloween Mode Activated!";
     activateHalloweenMode();
+    triggerJumpScare();
     clearInterval(timer);
     return;
   }
@@ -783,27 +788,13 @@ function activateHalloweenMode() {
   document.body.style.backgroundColor = "#1a1a1a";
   document.body.style.fontFamily = "'Creepster', cursive";
 
-  const corners = ["top-left", "top-right", "bottom-left", "bottom-right"];
-  corners.forEach(pos => {
-    const web = document.createElement("img");
-   
-    web.style.position = "fixed";
-    web.style.width = "100px";
-    web.style.zIndex = "9999";
-    web.style.filter = "drop-shadow(0 0 10px orange)";
-    if (pos.includes("top")) web.style.top = "0";
-    if (pos.includes("bottom")) web.style.bottom = "0";
-    if (pos.includes("left")) web.style.left = "0";
-    if (pos.includes("right")) web.style.right = "0";
-    document.body.appendChild(web);
-  });
+  // 🕸️ Removed corner spiderwebs
 
   const teaser = document.getElementById("teaser");
   if (teaser) {
     teaser.style.color = "orange";
     teaser.style.textShadow = "0 0 10px orange";
-    teaser.innerHTML =
-        teaser.innerHTML = "🕸️ Halloween Mode Activated!";
+    teaser.innerHTML = "🕸️ Halloween Mode Activated!";
   }
 
   const pumpkinRow = document.createElement("div");
@@ -823,7 +814,7 @@ function activateHalloweenMode() {
 
   const spider = document.createElement("img");
   
-
+  
   spider.style.position = "fixed";
   spider.style.bottom = "20px";
   spider.style.right = "20px";
@@ -833,12 +824,200 @@ function activateHalloweenMode() {
   document.body.appendChild(spider);
 }
 
+
+
+function triggerJumpScare() {
+  const scare = document.createElement("div");
+  scare.innerHTML = `
+    <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:10000; display:flex; align-items:center; justify-content:center;">
+      <img src="https://i.ytimg.com/vi/cD--BFcveeY/maxresdefault.jpg" alt="Scare" style="width:300px; animation: shake 0.5s infinite;">
+    </div>
+    <style>
+      @keyframes shake {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(5deg); }
+        50% { transform: rotate(-5deg); }
+        75% { transform: rotate(5deg); }
+        100% { transform: rotate(0deg); }
+      }
+    </style>
+  `;
+  document.body.appendChild(scare);
+  setTimeout(() => scare.remove(), 3000);
+}
+
+
 const timer = setInterval(updateCountdown, 1000);
 updateCountdown();
+
+setTimeout(() => {
+  // 🌫️ Fog overlay
+  const fog = document.createElement("div");
+  fog.style.position = "fixed";
+  fog.style.top = "0";
+  fog.style.left = "0";
+  fog.style.width = "100%";
+  fog.style.height = "100%";
+  fog.style.background = "url(https://images.rawpixel.com/dark_image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEwL3Jhd3BpeGVsX29mZmljZV8yNl9waG90b19vZl9hX2ZvZ19wbmdfaXNvbGF0ZWRfb25fYmxhY2tfYmFja2dyb19lNThlNTUzNy1jMjVmLTRiNjAtYmZkZC03NmQ1NDRjMmI4OTcucG5n.png') repeat";
+  fog.style.opacity = "0.3";
+  fog.style.zIndex = "999";
+  fog.style.pointerEvents = "none";
+  document.body.appendChild(fog);
+
+  // 🕷️ Spiders
+  for (let i = 0; i < 5; i++) {
+    const spider = document.createElement("img");
+    spider.src = "https://images.vexels.com/media/users/3/220602/isolated/preview/659989f1b774409dabd28c3734b7cc01-spider-eight-legged-silhouette.png";
+
+
+    setTimeout(() => {
+      spider.style.top = `${100 + i * 20}px`;
+      setTimeout(() => {
+        spider.style.top = `${-100 - i * 50}px`;
+      }, 3000);
+    }, 500);
+  }
+
+  // 🧙 Witches
+  for (let j = 0; j < 3; j++) {
+    const witch = document.createElement("img");
+    witch.src = "https://gallery.yopriceville.com/downloadfullsize/send/30015";
+    witch.alt = "Witch";
+    witch.style.position = "fixed";
+    witch.style.top = `${150 + j * 60}px`;
+    witch.style.left = "-200px";
+    witch.style.width = "120px";
+    witch.style.zIndex = "9999";
+    witch.style.transition = "left 5s linear";
+    document.body.appendChild(witch);
+
+    setTimeout(() => {
+      witch.style.left = "110%";
+    }, 100);
+  }
+
+  // 🧙‍♀️ Witch lands and casts spell
+  setTimeout(() => {
+    const landingWitch = document.createElement("img");
+    landingWitch.src = "https://media.silhouettedesignstore.com/media/catalog/product/s/i/si-halloween-witch-casting-spell_1756999240403.png";
+    landingWitch.alt = "Witch";
+    landingWitch.style.position = "absolute";
+    landingWitch.style.top = "600px";
+    landingWitch.style.left = "50%";
+    landingWitch.style.transform = "translateX(-50%)";
+    landingWitch.style.width = "140px";
+    landingWitch.style.zIndex = "9999";
+    landingWitch.style.transition = "opacity 1.5s ease-in-out";
+    document.body.appendChild(landingWitch);
+
+    // ✨ Sparkle spell effect
+    const sparkle = document.createElement("div");
+    sparkle.innerHTML = `
+      <div style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998;">
+        <div style="width:100%; height:100%; background:transparent;">
+          <div style="position
+
+                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+            width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, #fff, rgba(255,255,255,0));
+            animation: sparklePulse 1.5s ease-in-out infinite;"></div>
+        </div>
+      </div>
+      <style>
+        @keyframes sparklePulse {
+          0% { opacity: 0.2; transform: scale(0.8); }
+          50% { opacity: 0.8; transform: scale(1.2); }
+          100% { opacity: 0.2; transform: scale(0.8); }
+        }
+      </style>
+    `;
+    document.body.appendChild(sparkle);
+
+    // ⬜ Fade to white
+    const whiteFade = document.createElement("div");
+    whiteFade.style.position = "fixed";
+    whiteFade.style.top = "0";
+    whiteFade.style.left = "0";
+    whiteFade.style.width = "100%";
+    whiteFade.style.height = "100%";
+    whiteFade.style.backgroundColor = "#fff";
+    whiteFade.style.zIndex = "9999";
+    whiteFade.style.opacity = "0";
+    whiteFade.style.transition = "opacity 2s ease-in-out";
+    document.body.appendChild(whiteFade);
+
+    setTimeout(() => {
+      whiteFade.style.opacity = "1";
+
+      // 🧙‍♀️ Witch vanishes
+      landingWitch.style.opacity = "0";
+      setTimeout(() => {
+        landingWitch.remove();
+        sparkle.remove();
+      }, 1500);
+
+      // 💀 Countdown Message with Skull
+      setTimeout(() => {
+        whiteFade.style.opacity = "0";
+        setTimeout(() => {
+          whiteFade.remove(); // ✅ Make page clickable again
+        }, 1000);
+
+        document.getElementById("countdown").style.display = "block";
+
+        const countdownMsg = document.createElement("div");
+        countdownMsg.innerHTML = `
+        <div id="countdown-label" style="text-align:center; font-size:1.5rem; color:orange; font-weight:bold; text-shadow:0 0 10px orange;">
+  ⏳ Countdown till Halloween 💀
+</div>
+<div id="countdown" style="text-align:center; font-size:1.2rem; color:orange; font-weight:bold; margin-top:10px;"></div>
+ `;
+
+ 
+ const countdownTarget = new Date("2025-10-31T00:00:00");
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const distance = countdownTarget.getTime() - now;
+
+  if (distance <= 0) {
+    document.getElementById("countdown").innerHTML = "🎃 Halloween Qantas Has Landed!";
+    activateHalloweenMode();
+    triggerJumpScare();
+    clearInterval(timer);
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("countdown").innerHTML =
+    `${days}d ${hours}h ${minutes}m ${seconds}s until Halloween Qantas lands`;
+}
+
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
+
+
+        
+        document.getElementById("bookNowBtn").appendChild(countdownMsg);
+      }, 2000);
+    }, 1500);
+  }, 4000);
+}, 3200);
+
+
+
+
+
 </script>
+
+
 
 
 
     
 </body>
+
 
