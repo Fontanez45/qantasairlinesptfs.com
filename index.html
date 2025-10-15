@@ -203,32 +203,95 @@
 <body class="white-text">
 
 
-  <div id="cookieConsent" style="
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: #222;
-  color: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  font-family: 'Segoe UI', sans-serif;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  z-index: 9999;
-  display: none;
-">
-  🍪 This site uses cookies to improve your experience. By continuing, you accept our cookie policy.
-  <button onclick="acceptCookies()" style="
-    margin-left: 15px;
-    background: orange;
-    color: #000;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-  ">Accept</button>
+  <!-- 🍪 Cookie Consent Banner -->
+<div id="cookie-banner">
+  <div class="cookie-box">
+    <p>
+      Delta and our third-party partners access and store data on your device as necessary to provide this website and for analytics, enhanced functionality, and advertising.
+      <br><br>
+      <a href="/terms-of-use.html" target="_blank">Terms of Use</a> • 
+      <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
+    </p>
+    <button onclick="acceptCookies()">I Understand</button>
+  </div>
 </div>
+
+<style>
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  color: #333;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  z-index: 9999;
+}
+
+#cookie-banner.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cookie-box {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.cookie-box p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cookie-box a {
+  color: #0078d4;
+  text-decoration: underline;
+  margin: 0 5px;
+}
+
+.cookie-box button {
+  margin-top: 15px;
+  background: #d6001c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cookie-box button:hover {
+  background: #a80016;
+
+  #cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  color: #333;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  z-index: 9999;
+}
+
+#cookie-banner.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+}
+</style>
 
   <div id="loading-screen">
   <img src="https://gallery.yopriceville.com/downloadfullsize/send/3262" alt="Rolling Pumpkin" id="pumpkin">
@@ -289,6 +352,8 @@
   <div id="statusInfo" style="margin-top:20px;"></div>
 </div>
 
+
+
 <div id="credit" class="tab-content" style="display:flex; justify-content:center; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-top:3rem;">
   <div style="flex:1; min-width:300px;">
     <h2 style="color:#d6001c;">USE YOUR FLIGHT CREDIT</h2>
@@ -300,10 +365,173 @@
   <div id="creditFeedback" style="flex:1; min-width:300px;"></div>
 </div>
 
+<!-- Help Launcher -->
+<div id="help-launcher" onclick="openChat()" style="
+position: fixed;
+bottom: 20px;
+right: 20px;
+z-index: 9999;
+cursor: pointer;
+">
+<div style="
+  background: #b00020;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+">Help</div>
+<div style="
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  background: #0078d4;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #0078d4;
+"></div>
+</div>
+
+<!-- Chat Interface -->
+<div id="chat-box" style="
+display: none;
+position: fixed;
+bottom: 80px;
+right: 20px;
+width: 320px;
+background: #fff;
+border-radius: 10px;
+box-shadow: 0 0 15px rgba(0,0,0,0.2);
+font-family: 'Segoe UI', sans-serif;
+z-index: 9999;
+overflow: hidden;
+">
+<div style="background: #b00020; color: white; padding: 12px; font-weight: bold;">
+  Qantas Assistant | BETA 
+</div>
+<div id="chat-log" style="padding: 10px; max-height: 250px; overflow-y: auto; font-size: 0.9rem;"></div>
+<div style="padding: 10px; border-top: 1px solid #eee;">
+  <input type="text" id="chat-input" placeholder="Ask a question..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+  <button onclick="sendMessage()" style="margin-top: 8px; background: #0078d4; color: white; border: none; padding: 8px 12px; border-radius: 5px; width: 100%; font-weight: bold;">Send</button>
+</div>
+</div>
+
+<script>
+
+let awaitingDestination = false;
+
+function openChat() {
+  document.getElementById("chat-box").style.display = "block";
+  document.getElementById("help-launcher").style.display = "none";
+
+  const log = document.getElementById("chat-log");
+  log.innerHTML += `
+    <div style="margin-bottom: 10px;">
+      <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 10px;
+      max-width: 80%; float: left; clear: both; animation: fadeIn 0.5s ease;">
+        <strong>Bot:</strong> 👋 Welcome to Qantas Airlines! I'm here to help with flights, bookings, or baggage.
+      </div>
+    </div>
+  `;
+  log.scrollTop = log.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById("chat-input").value.trim();
+  const log = document.getElementById("chat-log");
+
+  if (!input) return;
+
+  log.innerHTML += `
+    <div style="margin-bottom: 10px;">
+      <div style="background: #eee; padding: 8px 12px; border-radius: 10px;
+      max-width: 80%; float: right; clear: both; animation: fadeIn 0.5s ease;">
+        <strong>You:</strong> ${input}
+      </div>
+    </div>
+  `;
+
+  const typingBubble = document.createElement("div");
+  typingBubble.id = "typing-bubble";
+  typingBubble.innerHTML = `
+    <div style="margin-bottom: 10px;">
+      <div class="typing-indicator" style="background: #f0f8ff; padding: 8px 12px;
+      border-radius: 10px; max-width: 80%; float: left; clear: both; font-style: italic;">
+        <strong>Bot:</strong> <span class="typing-indicator"></span>
+      </div>
+    </div>
+  `;
+  log.appendChild(typingBubble);
+  log.scrollTop = log.scrollHeight;
+
+  const lower = input.toLowerCase();
+  let response = "";
+
+  const greetings = ["wsg", "hello", "hi", "hey", "yo", "sup"];
+  const okWords = ["ok", "okay", "alright", "cool", "fine", "got it"];
+  const isGreeting = greetings.some(g => lower.includes(g));
+  const isOk = okWords.some(o => lower === o || lower.includes(` ${o}`));
+
+  if (awaitingDestination) {
+    const words = input.split(" ");
+    const lastWord = words[words.length - 1];
+    response = `🗺️ Got it — you're heading to <strong>${lastWord}</strong>. Check our <a href="/book.html">flight booking page</a> to see availability.`;
+    awaitingDestination = false;
+  } else if (isGreeting) {
+    response = "👋 I'm here to help! Welcome to Qantas Airlines.";
+  } else if (isOk) {
+    const okReplies = [
+      "👍 Got it! Let me know if you need anything else.",
+      "👌 All set. Safe travels with Qantas!",
+      "✈️ Cool. I’m here if you need help with flights or baggage.",
+      "✅ Okay! You’re good to go."
+    ];
+    response = okReplies[Math.floor(Math.random() * okReplies.length)];
+  } else if (lower.includes("flight")) {
+    response = "✈️ The next available flight is QF12 from JFK to SYD, departing at 9:45 AM. Status: On Time ✅";
+  } else if (
+    lower.includes("booking") ||
+    lower.includes("reserve") ||
+    lower.includes("ticket") ||
+    lower.includes("book")
+  ) {
+    response = "🧾 Sure! To book a flight, visit our booking page or tell me your destination.";
+    awaitingDestination = true;
+  } else if (lower.includes("baggage") || lower.includes("luggage")) {
+    response = "🧳 Economy passengers may check 1 bag up to 23kg. Additional fees apply for extra or overweight bags.";
+  } else {
+    response = "🙁 I'm sorry, I can only assist with flight details, bookings, or baggage inquiries at the moment.";
+  }
+
+  setTimeout(() => {
+    typingBubble.innerHTML = `
+      <div style="margin-bottom: 10px;">
+        <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 10px;
+        max-width: 80%; float: left; clear: both; animation: fadeIn 0.5s ease;">
+          <strong>Bot:</strong> ${response}
+        </div>
+      </div>
+    `;
+    log.scrollTop = log.scrollHeight;
+  }, 2000);
+
+  document.getElementById("chat-input").value = "";
+}
+
+
+</script>
+
+
+
 
 
 
 <script>
+
+  
+
+  
 
 function showTab(tabId) {
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -326,6 +554,8 @@ function applyFlightCredit() {
     "FLYVIP": { amount: 150, perks: ["30% Discount", "First-Class", "Lounge Access"] },
     "OPEN25": { amount: 500, perks: ["25% Discount", "Free First-Class Upgrade" ] }
   };
+
+  
 
   feedback.innerHTML = "";
   loader.style.display = "block";
@@ -375,34 +605,36 @@ function useFlightCredit() {
   `;
 }
 
-
 function acceptCookies() {
-  setCookie("cookiesAccepted", "true", 365);
-  document.getElementById("cookieConsent").style.display = "none";
-}
-
-function checkCookieConsent() {
-  if (getCookie("cookiesAccepted") !== "true") {
-    document.getElementById("cookieConsent").style.display = "block";
+  localStorage.setItem("cookieConsent", "accepted");
+  const banner = document.getElementById("cookie-banner");
+  if (banner) {
+    banner.style.opacity = "0";
+    banner.style.transform = "translateY(100%)";
+    setTimeout(() => banner.style.display = "none", 600);
   }
 }
 
-// Reuse cookie functions from earlier
-function setCookie(name, value, days) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+function rejectCookies() {
+  localStorage.setItem("cookieConsent", "rejected");
+  const banner = document.getElementById("cookie-banner");
+  if (banner) {
+    banner.style.opacity = "0";
+    banner.style.transform = "translateY(100%)";
+    setTimeout(() => banner.style.display = "none", 600);
+  }
 }
 
-function getCookie(name) {
-  return document.cookie.split('; ').reduce((r, v) => {
-    const parts = v.split('=');
-    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-  }, '');
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  checkCookieConsent();
+window.addEventListener("load", () => {
+  const consent = localStorage.getItem("cookieConsent");
+  const banner = document.getElementById("cookie-banner");
+  if (banner && consent !== "accepted" && consent !== "rejected") {
+    setTimeout(() => {
+      banner.classList.add("show");
+    }, 2500); // ⏱️ 1.5 second delay before fade-in
+  }
 });
+
 
 
 window.addEventListener("load", () => {
@@ -554,8 +786,7 @@ function activateHalloweenMode() {
   const corners = ["top-left", "top-right", "bottom-left", "bottom-right"];
   corners.forEach(pos => {
     const web = document.createElement("img");
-    web.src = "https://png.pngtree.com/png-vector/20220610/ourmid/pngtree-corner-spider-web-icon-png-image_4963712.png";
-    web.alt = "Spiderweb";
+   
     web.style.position = "fixed";
     web.style.width = "100px";
     web.style.zIndex = "9999";
@@ -591,8 +822,8 @@ function activateHalloweenMode() {
   document.body.appendChild(promoImage);
 
   const spider = document.createElement("img");
-  spider.src = "your-spider-image-url.png";
-  spider.alt = "Spider";
+  
+
   spider.style.position = "fixed";
   spider.style.bottom = "20px";
   spider.style.right = "20px";
