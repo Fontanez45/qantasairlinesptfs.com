@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flight Tracker – Qantas × Singapore Airlines</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #fff, #e0f7fa);
+      color: #333;
+    }
+
+    .navbar {
+      background: #d50000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .nav-logo {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: #ff4d4d;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .bar {
+      height: 3px;
+      width: 25px;
+      background-color: white;
+      margin: 4px 0;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #d50000;
+        position: absolute;
+        top: 60px;
+        right: 30px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    .flight-tracker {
+      margin: 60px auto;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .map {
+      position: relative;
+      height: 200px;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1280px-World_map_-_low_resolution.svg.png');
+      background-size: cover;
+      background-position: center;
+      border: 2px dashed #0077cc;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .city {
+      position: absolute;
+      font-weight: bold;
+      font-size: 16px;
+      background: #fff;
+      padding: 6px 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .city-aus {
+      top: 30px;
+      left: 40px;
+    }
+
+    .city-sg {
+      bottom: 30px;
+      right: 40px;
+    }
+
+    .route-line {
+      position: absolute;
+      top: 50%;
+      left: 80px;
+      right: 80px;
+      height: 2px;
+      background: repeating-linear-gradient(
+        to right,
+        #0077cc,
+        #0077cc 10px,
+        transparent 10px,
+        transparent 20px
+      );
+      transform: translateY(-50%);
+    }
+
+    .plane-icon {
+      position: absolute;
+      top: 45%;
+      width: 40px;
+      transition: left 1s linear;
+    }
+
+    .status-box {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .control-buttons {
+      margin-top: 20px;
+    }
+
+    .control-buttons button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      margin: 0 10px;
+    }
+
+    .weather-panel {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .weather-box {
+      display: flex;
+      justify-content: space-around;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .weather-box div {
+      background: #e0f7fa;
+      padding: 15px;
+      border-radius: 12px;
+      width: 45%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  
+    <div class="back-home-container">
+  <button onclick="goHome()" class="back-home">⬅️ Back to Home</button>
+</div>
+
+<style> .back-home-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.back-home {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-home:hover {
+  background-color: #2980b9;
+}
+</style>
+  
+<div class="flight-tracker">
+    <h2>🧭 Flight Tracker</h2>
+    <p>Tracking route from Sydney (SYD) to Los Angeles (LAX) 🇺🇸
+
+    </p>
+    <div class="map">
+      <span class="city city-aus">Sydney (SYD) 🇦🇺</span>
+      <span class="city city-sg">Los Angeles (LAX) 🇺🇸</span>
+      <div class="route-line"></div>
+      <img src="https://assets.streamlinehq.com/image/private/w_512,h_512,ar_1/f_auto/v1/icons/1/airplane-n8b7yqbx56egkzsuwj0xel.png/airplane-ujfmhc9kta9qo5navlp2lm.png?_a=DATAg1AAZAA0" class="plane-icon" id="plane" />
+    </div>
+    <div class="status-box">
+      <span id="positionLabel">🛫 Departing Sydney...</span><br>
+      <span id="timeLeft">⏳ Flight time remaining: 5m 0s</span>
+    <p>FLIGHT STATUS:</p>
+<div class="status-buttons">
+<button onclick="setFlightStatus('postponed')" class="status postponed">POSTPONED</button>
+</div>
+
+<style>
+  .flight-status-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.status-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.status {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.status:hover {
+  transform: scale(1.05);
+}
+
+.status.on-time {
+  background-color: #2ecc71; /* green */
+}
+
+.status.delayed {
+  background-color: #f1c40f; /* yellow */
+}
+
+.status.postponed,
+.status.canceled {
+  background-color: #e74c3c; /* red */
+}
+
+</style>
+
+    </div>
+    <div class="control-buttons" id="devControls" style="display:none;">
+      <button onclick="freezeTimer()">🛑 Freeze Timer</button>
+      <button onclick="unfreezeTimer()" id="unfreezeBtn" style="display:none;">🔓 Unfreeze Timer</button>
+    </div>
+  </div>
+
+  <div class="weather-panel">
+    <h3>🌦️ Real-Time Weather</h3>
+    <div class="weather-box">
+      <div>
+        <h4>Sydney 🇦🇺</h4>
+        <p>Cloudy, 67°F (Feels like 61°F)</p>
+        <p>Humidity: 87%</p>
+        <p>Wind: 10 mph</p>
+        <p>Visibility: 3.7 miles</p>
+      </div>
+      <div>
+        <h4>Los Angeles (LAX) 🇺🇸</h4>
+        <p>Moderate rain, 84°F</p>
+        <p>Humidity: 72%</p>
+        <p>Wind: 10 km/h</p>
+        <p>Rainfall: up to 8.45 mm</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+function goHome() {
+  window.location.href = "index.html"; // Change this to your actual home page URL
+}
+
+  
+  const plane = document.getElementById("plane");
+  const positionLabel = document.getElementById("positionLabel");
+  const timeLeft = document.getElementById("timeLeft");
+
+  const totalFlightTime = 900; // 15 minutes
+  const routeWidth = 540;
+  const unlockKey = "flightUnlockTime";
+
+  let flightInterval;
+  let frozen = true;
+
+ // Set unlock time using a specific date and time
+// Format: YYYY-MM-DDTHH:mm:ss (local time)
+const unlockDateTime = new Date("2026-10-17T13:41:00"); // 1:36 PM on Oct 17, 2025
+localStorage.setItem(unlockKey, unlockDateTime.getTime().toString());
+
+const unlockTime = parseInt(localStorage.getItem(unlockKey));
+const now = Date.now();
+
+let elapsed = 0;
+
+if (unlockTime && now > unlockTime) {
+  frozen = false;
+  elapsed = Math.floor((now - unlockTime) / 1000);
+  if (elapsed > totalFlightTime) elapsed = totalFlightTime;
+}
+
+// Auto-reload when unlock time is reached
+setInterval(() => {
+  const unlockTime = parseInt(localStorage.getItem("flightUnlockTime"));
+  const now = Date.now();
+  if (unlockTime && now >= unlockTime && frozen) {
+    location.reload();
+  }
+}, 1000);
+
+
+  
+
+  function updateFlight() {
+    if (frozen) {
+      plane.style.left = "80px";
+      positionLabel.innerText = "🕒 Flight was postponed, please contact a staff for help...";
+      timeLeft.innerText = `⏳ Flight time remaining: ${Math.floor(totalFlightTime / 60)}m ${totalFlightTime % 60}s`;
+      return;
+    }
+
+    elapsed++;
+    const remaining = totalFlightTime - elapsed;
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+    timeLeft.innerText = `⏳ Flight time remaining: ${minutes}m ${seconds}s`;
+
+    const progress = elapsed / totalFlightTime;
+    const leftPosition = 80 + progress * routeWidth;
+    plane.style.left = `${leftPosition}px`;
+
+    if (progress < 0.3) {
+      positionLabel.innerText = "🛫 Departing Sydney...";
+    } else if (progress < 0.7) {
+      positionLabel.innerText = "🛩️ Midway to Los Angeles 🇺...";
+    } else if (progress < 1) {
+      positionLabel.innerText = "🧳 Preparing to land...";
+    } else {
+      positionLabel.innerText = "🎉 Arrived in Los Angeles (LAX) 🇺🇸!";
+      clearInterval(flightInterval);
+    }
+  }
+
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("active");
+  }
+
+  window.onload = function () {
+    updateFlight();
+    flightInterval = setInterval(updateFlight, 1000);
+  };
+</script>
+
+
+
+</body>
+</html>

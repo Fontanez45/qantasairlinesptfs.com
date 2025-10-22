@@ -1,11 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qantas Roblox</title>
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+
+
+
+
+
+  
   <style>
+
+
+/* ✅ Mobile styles for screens under 600px */
+@media screen and (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  nav {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  nav a {
+    margin-left: 0;
+    font-size: 16px;
+  }
+
+  .hero {
+    height: 200px;
+  }
+
+  .hero-text {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .hero-text h1 {
+    font-size: 18px;
+  }
+
+  .hero-text p {
+    font-size: 14px;
+  }
+
+  .hero-text button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .tab {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .tab-content {
+    padding: 20px;
+  }
+
+  .glow-btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  #pumpkin {
+    width: 60px;
+  }
+}
 
 
     #loading-screen {
@@ -309,6 +378,8 @@
   </nav>
 </header>
 
+
+
 <div class="hero">
   <div class="slide active"><img src="https://i.imgur.com/zLqZVO3.png" alt="Slide 1"></div>
   <div class="slide"><img src="https://i.imgur.com/fe8vTZz.png" alt="Slide 2"></div>
@@ -336,6 +407,26 @@
 <div id="book" class="tab-content active">
   <h2>Available Flights</h2>
   <div id="bookNowBtn"></div>
+  <a href="flight-status.html" class="btn flight-status">Flight Status | BETA </a>
+
+<style>
+
+.btn.flight-status {
+  background-color: #0077cc;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.btn.flight-status:hover {
+  background-color: #005fa3;
+}
+
+
+
+</style>
   
 </div>
 
@@ -1014,6 +1105,261 @@ updateCountdown();
 </script>
 
 
+<!--  News Alert Pop-Up -->
+<div id="newsAlert" style="display:none;">
+  <div class="popup bounce" id="popupBox">
+    <div class="logo-banner">
+      <img src="https://logos-world.net/wp-content/uploads/2023/01/Qantas-Logo.png" class="logo" />
+      <span style="font-weight:bold;">×</span>
+      <img src="https://1000logos.net/wp-content/uploads/2020/04/Singapore-Airlines-Logo.png" class="logo" />
+    </div>
+
+    
+
+    <img src="https://assets.streamlinehq.com/image/private/w_512,h_512,ar_1/f_auto/v1/icons/1/airplane-n8b7yqbx56egkzsuwj0xel.png/airplane-ujfmhc9kta9qo5navlp2lm.png?_a=DATAg1AAZAA0" class="plane" />
+
+    <div id="progressBar"></div>
+
+    <h2>🚨 NEWS ALERT</h2>
+    <p><strong>Singapore Airlines × Qantas Airlines</strong></p>
+    <p>New partnership just landed. Double the skies, double the snacks.</p>
+
+    <p id="countdown" style="font-weight:bold; color:#d50000;"></p>
+
+    <label for="snack">Choose your in-flight snack:</label>
+    <select id="snack" onchange="snackReact()">
+      <option value="">-- Select --</option>
+      <option>Hot Cheetos</option>
+      <option>Sprite</option>
+      <option>Roblox Cookies</option>
+      <option>Air Salad</option>
+    </select>
+    <p id="snackReaction" style="font-weight:bold;"></p>
+
+    <div style="display:flex; justify-content:center; gap:10px; margin-top:20px;">
+      <a href="quiz.html"><button style="background:#000; color:#fff;">🧠 Take the Quiz</button></a>
+      <a href="learnmore.html" target="_blank"><button style="background:#0077cc; color:#fff;">📘 Learn More</button></a>
+      <button onclick="closeAlert()" style="background:#555; color:#fff;">❌ Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 💅 Style -->
+<style>
+  #progressBar {
+  height: 6px;
+  width: 0%;
+  background-color: #d50000;
+  border-radius: 3px;
+  margin-top: 20px;
+  transition: width 1s linear;
+}
+
+body {
+  transition: background 0.5s ease;
+  background: #e0f7fa;
+}
+
+.popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffefef;
+  border: 3px solid #ff0000;
+  padding: 20px;
+  width: 360px;
+  z-index: 999;
+  box-shadow: 0 0 30px #ff0000;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  animation: pulse 1s infinite;
+  transition: background 0.5s ease, color 0.5s ease;
+  border-radius: 20px;
+}
+
+.popup.bounce {
+  animation: bounceIn 1s ease;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.5) translateX(-50%); opacity: 0; }
+  60% { transform: scale(1.2) translateX(-50%); opacity: 1; }
+  80% { transform: scale(0.95) translateX(-50%); }
+  100% { transform: scale(1) translateX(-50%); }
+}
+
+.popup h2 {
+  color: #ff0000;
+  margin-bottom: 10px;
+}
+
+.popup button {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 20px;
+}
+
+.plane {
+  width: 60px;
+  animation: land 2s ease-out forwards;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.logo {
+  height: 30px;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px #ff0000; }
+  50% { box-shadow: 0 0 30px #ff0000; }
+  100% { box-shadow: 0 0 10px #ff0000; }
+}
+
+@keyframes land {
+  0% { transform: translateY(-100px) rotate(-10deg); opacity: 0; }
+  50% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(5px); }
+}
+</style>
+
+<!-- Script -->
+
+<script>
+function showPopup() {
+  document.getElementById("newsAlert").style.display = "block";
+  new Audio("https://www.myinstants.com/media/sounds/airplane-ding.mp3").play();
+  startCountdown();
+
+  const progressBar = document.getElementById("progressBar");
+progressBar.style.width = "0%";
+
+let progress = 0;
+const progressInterval = setInterval(() => {
+  progress += 100 / 70; // 70 seconds total
+  progressBar.style.width = `${progress}%`;
+  if (progress >= 100) clearInterval(progressInterval);
+}, 1000);
+
+
+  // Auto-close after 1 minute if not manually closed
+  setTimeout(() => {
+    const alertBox = document.getElementById("newsAlert");
+    if (alertBox.style.display === "block") {
+      alertBox.style.display = "none";
+    }
+  }, 70000); // 60,000 ms = 1 minute
+}
+
+function closeAlert() {
+  document.getElementById("newsAlert").style.display = "none";
+}
+
+function startCountdown() {
+  const launchDate = new Date();
+  launchDate.setMinutes(launchDate.getMinutes() + 5);
+  const countdownEl = document.getElementById("countdown");
+
+  const interval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = launchDate - now;
+
+    if (distance < 0) {
+      clearInterval(interval);
+      countdownEl.innerText = "🎉 Launching now!";
+    } else {
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      countdownEl.innerText = `⏳ Launching in ${minutes}m ${seconds}s`;
+    }
+  }, 1000);
+}
+
+function snackReact() {
+  const snack = document.getElementById("snack").value;
+  const reaction = {
+    "Hot Cheetos": "🔥 Spicy choice!",
+    "Sprite": "🧊 Refreshing!",
+    "Roblox Cookies": "🍪 Gamer fuel!",
+    "Air Salad": "🥴 You sure about that?"
+  };
+  document.getElementById("snackReaction").innerText = reaction[snack] || "";
+}
+
+//  Show popup after 12.2 seconds, then every 30 minutes
+window.onload = function() {
+  setTimeout(showPopup, 12200); // show after 12.2 seconds
+  setInterval(showPopup, 1800000); // repeat every 30 minutes
+};
+</script>
+
+
+
+
+
+
+
+<script>
+let awayTimer;
+const awayLimit = 360000; // 1 minute
+
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    awayTimer = setTimeout(() => {
+      showAwayMessage();
+    }, awayLimit);
+  } else {
+    clearTimeout(awayTimer);
+  }
+});
+
+function showAwayMessage() {
+  const overlay = document.createElement("div");
+  overlay.id = "awayOverlay";
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.background = "rgba(0,0,0,0.5)";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.zIndex = "9999";
+
+  const box = document.createElement("div");
+  box.style.background = "#fff";
+  box.style.borderRadius = "30px";
+  box.style.padding = "40px";
+  box.style.textAlign = "center";
+  box.style.boxShadow = "0 0 20px rgba(0,0,0,0.3)";
+  box.style.maxWidth = "400px";
+  box.style.fontSize = "18px";
+  box.style.color = "#333";
+
+  box.innerHTML = `
+    <div style="font-size: 28px; margin-bottom: 20px;">⚠️</div>
+    <div>You’ve been away too long.<br>Reload for best experience.</div>
+    <button onclick="location.reload()" style="margin-top: 25px; padding: 10px 20px; font-size: 16px; background: #d50000; color: white; border: none; border-radius: 20px; cursor: pointer;">🔄 Reload</button>
+  `;
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+</script>
 
 
 

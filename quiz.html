@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Singapore × Qantas Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #d50000;
+    }
+    .question {
+      margin: 20px 0;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .question.correct {
+      background-color: #d0ffd0;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .question.wrong {
+      background-color: #ffd0d0;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #d50000;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Singapore × Qantas Quiz</h1>
+  <form id="quizForm">
+    <div class="question" id="q1">
+      <p>1. What country is Qantas Airlines based in?</p>
+      <label><input type="radio" name="q1" value="a"> USA</label><br>
+      <label><input type="radio" name="q1" value="b"> Australia</label><br>
+      <label><input type="radio" name="q1" value="c"> Singapore</label>
+    </div>
+    <div class="question" id="q2">
+      <p>2. What is Singapore Airlines known for?</p>
+      <label><input type="radio" name="q2" value="a"> Roblox flights</label><br>
+      <label><input type="radio" name="q2" value="b"> Pizza delivery</label><br>
+      <label><input type="radio" name="q2" value="c"> Train rides</label>
+    </div>
+    <div class="question" id="q3">
+      <p>3. What animal is featured in Qantas branding?</p>
+      <label><input type="radio" name="q3" value="a"> Kangaroo</label><br>
+      <label><input type="radio" name="q3" value="b"> Eagle</label><br>
+      <label><input type="radio" name="q3" value="c"> Koala</label>
+    </div>
+    <div class="question" id="q4">
+      <p>4. What does “Singapore Airlines” stand for?</p>
+      <label><input type="radio" name="q4" value="a"> Signature Port</label><br>
+      <label><input type="radio" name="q4" value="b"> Signpost Portal</label><br>
+      <label><input type="radio" name="q4" value="c"> It's an airline name who did the broke to world fastest flight of 19h 30 min from New York to Singapore</label>
+    </div>
+    <div class="question" id="q5">
+      <p>5. What’s the theme of this partnership?</p>
+      <label><input type="radio" name="q5" value="a"> Double the skies, double the snacks</label><br>
+      <label><input type="radio" name="q5" value="b"> Faster than light</label><br>
+      <label><input type="radio" name="q5" value="c"> Roblox to the moon</label>
+    </div>
+    <button type="button" onclick="submitQuiz()">Submit</button>
+  </form>
+
+  <div id="result"></div>
+  <div id="homeButton" style="margin-top:20px; display:none;">
+    <a href="index.html"><button>🏠 Back to Home</button></a>
+  </div>
+
+<script>
+  const correctAnswers = {
+    q1: "b",
+    q2: "a",
+    q3: "a",
+    q4: "c",
+    q5: "a"
+  };
+
+  let passesLeft = localStorage.getItem("passesLeft");
+  let winners = localStorage.getItem("winners");
+  let quizTaken = localStorage.getItem("quizTaken");
+
+  if (passesLeft === null) {
+    passesLeft = 15;
+    localStorage.setItem("passesLeft", passesLeft);
+  }
+
+  if (winners === null) {
+    winners = 0;
+    localStorage.setItem("winners", winners);
+  }
+
+  function generateCode() {
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    return `SPQF-${randomNum}-WIN`;
+  }
+
+  function submitQuiz() {
+    if (quizTaken === "true") {
+      showAlreadyTakenPopup();
+      return;
+    }
+
+    let score = 0;
+
+    for (let q in correctAnswers) {
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      const questionDiv = document.getElementById(q);
+      questionDiv.classList.remove("correct", "wrong");
+
+      if (selected) {
+        if (selected.value === correctAnswers[q]) {
+          questionDiv.classList.add("correct");
+          score++;
+        } else {
+          questionDiv.classList.add("wrong");
+        }
+      } else {
+        questionDiv.classList.add("wrong");
+      }
+    }
+
+    passesLeft = parseInt(passesLeft);
+    winners = parseInt(winners);
+
+    if (score >= 4 && passesLeft > 0) {
+      passesLeft--;
+      winners++;
+      const flightCode = generateCode();
+      localStorage.setItem("passesLeft", passesLeft);
+      localStorage.setItem("winners", winners);
+      document.getElementById("result").innerHTML = `
+        🎉 You scored ${score}/5!<br>
+        Flight Credit Code: <strong>${flightCode}</strong><br>
+        🎫 Limited Passes Left: ${passesLeft}<br>
+        🏆 Total Winners: ${winners}
+      `;
+    } else if (score >= 4 && passesLeft <= 0) {
+      document.getElementById("result").innerHTML = `
+        ✅ You scored ${score}/5, but all flight passes are gone.<br>
+        🏆 Total Winners: ${winners}<br>
+        🎫 Passes Left: 0
+      `;
+    } else {
+      document.getElementById("result").innerHTML = `
+        ❌ You scored ${score}/5.<br>
+        You need at least 4/5 to earn the flight credit.<br>
+        🎫 Passes Left: ${passesLeft}<br>
+        🏆 Total Winners: ${winners}
+      `;
+    }
+
+    localStorage.setItem("quizTaken", "true");
+    document.getElementById("homeButton").style.display = "block";
+  }
+
+  function showAlreadyTakenPopup() {
+    const popup = document.createElement("div");
+    popup.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff0f0;
+        border: 3px solid #d50000;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #d50000;
+        z-index: 9999;
+        border-radius: 10px;
+        box-shadow: 0 0 20px #d50000;
+      ">
+        ❌ You already took this quiz. No second chances!
+      </div>
+    `;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 4000);
+  }
+</script>
+
+</body>
+</html>

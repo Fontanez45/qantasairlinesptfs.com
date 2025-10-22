@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Winterfest</title>
+  <style>
+      body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: white;
+      overflow: hidden;
+    }
+    .screen {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .screen.active {
+      display: flex;
+    }
+    #outside {
+      background: url('https://i.imgur.com/Db8iiIB.gif') center center / cover no-repeat;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      position: relative;
+    }
+    #outside.zooming {
+      animation: zoomOut 1.2s forwards;
+    }
+    @keyframes zoomOut {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    #santaScene {
+      background: url('https://i.imgur.com/2z1ZQwU.jpg') center center / cover no-repeat;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9;
+    }
+    #lodge {
+      background: url('https://i.imgur.com/9UqwF3c.gif') center center / cover no-repeat;
+      flex-direction: column;
+      padding-top: 40px;
+      z-index: 8;
+    }
+    #characterReveal {
+      background: black;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease-in;
+      z-index: 7;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #ff4d4d;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+    .present {
+      background: #ff4d4d;
+      border: 2px solid white;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 10px;
+      width: 120px;
+      position: relative;
+    }
+    .shake {
+      animation: shake 0.4s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ffffcc;
+    }
+    #characterImage {
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 40px white;
+      animation: spotlight 1s ease-out;
+    }
+    @keyframes spotlight {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #santaSpeech {
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 20px;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+    #continuePrompt {
+      margin-top: 30px;
+      font-size: 18px;
+      display: none;
+    }
+    #alreadyPopup, #sneakyPopup, #presentReadyPopup {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 10px;
+      display: none;
+      z-index: 999;
+      font-size: 18px;
+    }
+    #presentAlertIcon {
+      width: 30px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="outside" class="screen active">
+    <button id="enterLodgeBtn" onclick="enterLodge()">Go to Lodge</button>
+    <img id="presentAlertIcon" src="https://yourdomain.com/alert-icon.png" alt="Alert">
+  </div>
+
+<!-- Elf Help Button -->
+<button onclick="startElfCutscene()" style="position:fixed;bottom:140px;left:20px;z-index:999;">📘 Elf Help</button>
+
+<!-- Elf Cutscene Popup -->
+<div id="elfCutscene" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#000; padding:20px; border-radius:12px; border:2px solid #333; max-width:320px; z-index:1000; text-align:center;">
+  <img src="https://i.imgur.com/IbDOFiL.png" alt="Elf" style="width:80px; margin-bottom:10px;">
+  <div id="elfCutsceneText" style="font-size:16px; min-height:60px;"></div>
+  <div id="elfChoiceButtons" style="margin-top:10px;">
+    <button onclick="chooseElfHelp(true)" style="padding:6px 12px; background:#2ecc40; color:#fff; border:none; border-radius:6px;">Yes</button>
+    <button onclick="chooseElfHelp(false)" style="padding:6px 12px; background:#ff4d4d; color:#fff; border:none; border-radius:6px; margin-left:10px;">No</button>
+  </div>
+  <div id="elfContinuePrompt" style="margin-top:10px; font-size:14px; display:none;">Press SPACE to continue</div>
+</div>
+
+
+<!-- Elf Help Button -->
+<button onclick="startElfCutscene()" style="position:fixed;bottom:140px;left:20px;z-index:999;">📘 Elf Help</button>
+
+  
+<!-- Mute Button -->
+<button id="muteBtn" style="position:fixed;bottom:20px;left:20px;z-index:999;">🔇 Mute Music</button>
+
+<!-- Elf Joke Button and Popup -->
+<button onclick="showElfJoke()" style="position:fixed;bottom:80px;left:20px;z-index:999;">🧝‍♂️ Ask an Elf</button>
+<div id="elfJokePopup" style="display:none;position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);background:#333;padding:20px;border-radius:10px;border:2px solid #fff;z-index:999;">
+  <div id="elfJokeText" style="font-size:18px;"></div>
+  <br>
+  <button onclick="closeElfJoke()">OK</button>
+</div>
+
+<!-- Elf Cutscene Popup -->
+<div id="elfCutscene" style="display:none; position:fixed; bottom:20px; left:20px; background:#fff; color:#000; padding:20px; border-radius:12px; border:2px solid #333; max-width:320px; z-index:1000;">
+  <img src="https://yourdomain.com/elf.png" alt="Elf" style="width:60px; margin-bottom:10px;">
+  <div id="elfCutsceneText" style="font-size:16px; margin-bottom:10px;"></div>
+  <div id="elfChoiceButtons">
+    <button onclick="chooseElfHelp(true)" style="padding:6px 12px; background:#2ecc40; color:#fff; border:none; border-radius:6px;">Yes</button>
+    <button onclick="chooseElfHelp(false)" style="padding:6px 12px; background:#ff4d4d; color:#fff; border:none; border-radius:6px; margin-left:10px;">No</button>
+  </div>
+  <div id="elfContinuePrompt" style="display:none; margin-top:10px; font-size:14px;">Press SPACE to continue</div>
+</div>
+
+
+
+  <div id="presentReadyPopup">
+    <img src="https://yourdomain.com/present-ready.png" alt="Present Ready" style="width:300px;">
+  </div>
+  
+  <div id="santaScene" class="screen">
+    <img src="https://i.imgur.com/8QfXh4K.png" alt="Santa" style="width:200px; margin-top:50px;">
+    <div id="santaSpeech"></div>
+    <div id="continuePrompt">Press SPACE to continue</div>
+  </div>
+  
+  <div id="lodge" class="screen">
+    <h1>🎁 Winterfest Lodge 🎁</h1>
+    <div id="presents" style="display: flex; flex-wrap: wrap; justify-content: center; max-height: 70vh; overflow-y: auto;"></div>
+  </div>
+  
+  <div id="characterReveal" class="screen">
+    <h2>You Unlocked:</h2>
+    <img id="characterImage" src="" alt="Character">
+    <br><br>
+    <button onclick="goBackToLodge()">Back to Lodge</button>
+  </div>
+  
+  <div id="alreadyPopup">
+    <div>You already opened today’s present!</div>
+    <button onclick="closeAlready()">OK</button>
+  </div>
+  
+  <div id="sneakyPopup">
+    <div style="color: #ffcccc;">You can’t open two presents. Santa says no!</div>
+    <button onclick="closeSneaky()">OK</button>
+  </div>
+  <div id="santaScene" class="screen">
+  <img src="https://i.imgur.com/8QfXh4K.png" alt="Santa" style="width:200px; margin-top:50px;">
+  <div id="santaSpeech"></div>
+  <div id="continuePrompt" style="display:none;">Press SPACE to continue</div>
+</div>
+
+
+<!--  JavaScript Section -->
+<script>
+const elfCutscene = document.getElementById('elfCutscene');
+const elfCutsceneText = document.getElementById('elfCutsceneText');
+const elfChoiceButtons = document.getElementById('elfChoiceButtons');
+const elfContinuePrompt = document.getElementById('elfContinuePrompt');
+const enterLodgeBtn = document.getElementById('enterLodgeBtn');
+
+let elfDialogue = [];
+let elfLineIndex = 0;
+let elfCharIndex = 0;
+let elfTyping = false;
+let elfTutorialFinished = false;
+
+function startElfCutscene() {
+  if (localStorage.getItem('elfTutorialComplete') === 'true') return;
+
+  elfCutscene.style.display = 'block';
+  elfCutsceneText.textContent = "Do you want me to help you?";
+  elfChoiceButtons.style.display = 'block';
+
+  enterLodgeBtn.disabled = true;
+  enterLodgeBtn.style.opacity = '0.5';
+  enterLodgeBtn.style.cursor = 'not-allowed';
+}
+
+function chooseElfHelp(yes) {
+  elfChoiceButtons.style.display = 'none';
+  elfContinuePrompt.style.display = 'block';
+
+  if (yes) {
+    elfDialogue = [
+      "Great! I'm your Winterfest Elf 🧝‍♂️",
+      "Each day, you can open one magical present.",
+      "Start by shaking a box to hear a hint.",
+      "Then click 'Open' to reveal your surprise!",
+      "If you miss a day, Santa will collect your gifts.",
+      "Come back tomorrow for more festive fun!",
+      "You're ready now — I'll leave you to it!"
+    ];
+  } else {
+    elfDialogue = [
+      "Okay, you can't enter the Lodge until you finish the tutorial.",
+      "You can always find me on the left side of the screen at the bottom."
+    ];
+  }
+
+  elfLineIndex = 0;
+  typeElfLine();
+}
+
+function typeElfLine() {
+  elfCharIndex = 0;
+  elfCutsceneText.textContent = '';
+  elfTyping = true;
+  typeElfChar();
+}
+
+function typeElfChar() {
+  const line = elfDialogue[elfLineIndex];
+  if (elfCharIndex < line.length) {
+    elfCutsceneText.textContent += line[elfCharIndex];
+    elfCharIndex++;
+    setTimeout(typeElfChar, 40);
+  } else {
+    elfTyping = false;
+  }
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' && !elfTyping && elfCutscene.style.display === 'block' && !elfTutorialFinished) {
+    elfLineIndex++;
+    if (elfLineIndex < elfDialogue.length) {
+      typeElfLine();
+    } else {
+      finishElfCutscene();
+    }
+  }
+});
+
+function finishElfCutscene() {
+  elfTutorialFinished = true;
+  elfCutscene.style.display = 'none';
+  elfContinuePrompt.style.display = 'none';
+
+  if (elfDialogue.length > 2) {
+    // Tutorial was completed
+    enterLodgeBtn.disabled = false;
+    enterLodgeBtn.style.opacity = '1';
+    enterLodgeBtn.style.cursor = 'pointer';
+    localStorage.setItem('elfTutorialComplete', 'true');
+  }
+}
+
+
+const characterImages = {
+  day1: 'https://yourdomain.com/day1.png',
+  day2: 'https://yourdomain.com/day2.png',
+  day3: 'https://yourdomain.com/day3.png',
+  day4: 'https://yourdomain.com/day4.png',
+  day5: 'https://yourdomain.com/day5.png',
+  day6: 'https://yourdomain.com/day6.png',
+  day7: 'https://yourdomain.com/day6.png',
+  day8: 'https://yourdomain.com/day6.png',
+  day9: 'https://yourdomain.com/day6.png',
+  day10: 'https://yourdomain.com/day6.png',
+  day12: 'https://yourdomain.com/day6.png',
+  day13: 'https://yourdomain.com/day6.png',
+  day14: 'https://yourdomain.com/day6.png',
+  day15: 'https://yourdomain.com/day6.png',
+  // Add up to day25
+
+
+};
+
+const todayKey = new Date().toDateString();
+const presentsContainer = document.getElementById('presents');
+const characterImage = document.getElementById('characterImage');
+const lodge = document.getElementById('lodge');
+const characterReveal = document.getElementById('characterReveal');
+const santaScene = document.getElementById('santaScene');
+const outside = document.getElementById('outside');
+const santaSpeech = document.getElementById('santaSpeech');
+const continuePrompt = document.getElementById('continuePrompt');
+const alreadyPopup = document.getElementById('alreadyPopup');
+const sneakyPopup = document.getElementById('sneakyPopup');
+const presentAlertIcon = document.getElementById('presentAlertIcon');
+const presentReadyPopup = document.getElementById('presentReadyPopup');
+
+function closeAlready() {
+  alreadyPopup.style.display = 'none';
+}
+function closeSneaky() {
+  sneakyPopup.style.display = 'none';
+}
+function goBackToLodge() {
+  characterReveal.classList.remove('active');
+  lodge.classList.add('active');
+}
+
+function openPresent(btn, index) {
+  const key = `day${index}`;
+  const opened = JSON.parse(localStorage.getItem('opened') || '{}');
+
+  if (opened[key]) {
+    alreadyPopup.style.display = 'block';
+    return;
+  }
+
+  const todayOpened = opened[todayKey];
+  if (todayOpened && todayOpened !== key) {
+    sneakyPopup.style.display = 'block';
+    return;
+  }
+
+  opened[key] = true;
+  opened[todayKey] = key;
+  localStorage.setItem('opened', JSON.stringify(opened));
+
+  lodge.classList.remove('active');
+  characterReveal.classList.add('active');
+  characterImage.src = characterImages[key] || 'https://via.placeholder.com/300x300?text=No+Image';
+}
+
+function shake(btn) {
+  const box = btn.parentElement;
+  box.classList.add('shake');
+  const hint = box.querySelector('.hint');
+  hint.style.display = 'block';
+  setTimeout(() => box.classList.remove('shake'), 400);
+}
+
+function renderPresents() {
+  const opened = JSON.parse(localStorage.getItem('opened') || '{}');
+  presentsContainer.innerHTML = '';
+
+  for (let i = 1; i <= 25; i++) {
+    const key = `day${i}`;
+    const wasOpened = opened[key];
+
+    const box = document.createElement('div');
+    box.className = 'present';
+    box.innerHTML = `
+      <div>Day ${i}</div>
+      ${wasOpened ? '<div style="font-size:24px;">❌</div>' : `
+        <button onclick="shake(this)">Shake</button>
+        <div class="hint" style="display:none;">Sounds like a skin...</div>
+        <button onclick="openPresent(this, ${i})">Open</button>
+      `}
+    `;
+    presentsContainer.appendChild(box);
+  }
+}
+
+function checkPresentStatus() {
+  const opened = JSON.parse(localStorage.getItem('opened') || '{}');
+  const hasOpenedToday = Object.keys(opened).includes(todayKey);
+  presentAlertIcon.style.display = hasOpenedToday ? 'none' : 'inline';
+
+  const lastVisit = localStorage.getItem('lastVisit');
+  if ((!lastVisit || lastVisit !== todayKey) && !hasOpenedToday) {
+    setTimeout(() => {
+      outside.classList.remove('active');
+      lodge.classList.add('active');
+      presentReadyPopup.style.display = 'block';
+      setTimeout(() => {
+        presentReadyPopup.style.display = 'none';
+      }, 4000);
+    }, 500);
+  }
+
+  localStorage.setItem('lastVisit', todayKey);
+}
+
+function enterLodge() {
+  const hasSeenIntro = localStorage.getItem('hasSeenIntro');
+  outside.classList.add('zooming');
+
+  setTimeout(() => {
+    outside.classList.remove('zooming');
+    outside.classList.remove('active');
+
+    if (!hasSeenIntro) {
+      santaScene.classList.add('active');
+      startSantaDialogue();
+      localStorage.setItem('hasSeenIntro', 'true');
+    } else {
+      lodge.classList.add('active');
+    }
+  }, 1200);
+}
+
+function startSantaDialogue() {
+  const messages = [
+    "Ho ho ho! Welcome to Winterfest!",
+    "Each day, you’ll get to open one magical present.",
+    "Shake it first to guess what’s inside!",
+    "Let’s get started, shall we?"
+  ];
+
+  let index = 0;
+  let typing = '';
+  let charIndex = 0;
+
+  function typeMessage() {
+    if (charIndex < messages[index].length) {
+      typing += messages[index][charIndex];
+      santaSpeech.textContent = typing;
+      charIndex++;
+      setTimeout(typeMessage, 50);
+    } else {
+      index++;
+      if (index < messages.length) {
+        typing = '';
+        charIndex = 0;
+        setTimeout(typeMessage, 1000);
+      } else {
+        continuePrompt.style.display = 'block';
+        window.addEventListener('keydown', handleSpace);
+      }
+    }
+  }
+
+  typeMessage();
+}
+
+function handleSpace(e) {
+  if (e.code === 'Space') {
+    santaScene.classList.remove('active');
+    lodge.classList.add('active');
+    window.removeEventListener('keydown', handleSpace);
+  }
+}
+
+// Reload page at midnight
+let lastDate = new Date().toDateString();
+setInterval(() => {
+  const currentDate = new Date().toDateString();
+  if (currentDate !== lastDate) {
+    location.reload();
+  }
+}, 60000);
+
+// 🎶 Add festive background music
+const audio = new Audio('https://files.fm/u/uasa7bvvk5');
+audio.loop = true;
+audio.volume = 0.5;
+window.addEventListener('load', () => {
+  audio.play().catch(() => {
+    console.log("Audio autoplay blocked. User interaction required.");
+  });
+});
+
+// ✅ Initialize
+renderPresents();
+checkPresentStatus();
+
+// 🎁 Day 25 Mega Surprise
+function openPresent(btn, index) {
+  const key = `day${index}`;
+  const opened = JSON.parse(localStorage.getItem('opened') || '{}');
+
+  if (opened[key]) {
+    alreadyPopup.style.display = 'block';
+    return;
+  }
+
+  const todayOpened = opened[todayKey];
+  if (todayOpened && todayOpened !== key) {
+    sneakyPopup.style.display = 'block';
+    return;
+  }
+
+  opened[key] = true;
+  opened[todayKey] = key;
+  localStorage.setItem('opened', JSON.stringify(opened));
+
+  lodge.classList.remove('active');
+  characterReveal.classList.add('active');
+
+  if (key === 'day25') {
+    alert("🎉 You've unlocked the Mega Surprise! Santa's secret skin is yours!");
+    characterImage.src = 'https://yourdomain.com/mega-surprise.png';
+  } else {
+    characterImage.src = characterImages[key] || 'https://via.placeholder.com/300x300?text=No+Image';
+  }
+}
+
+// 🔇 Mute/Unmute Music
+const muteBtn = document.getElementById('muteBtn');
+let isMuted = false;
+
+muteBtn.addEventListener('click', () => {
+  isMuted = !isMuted;
+  audio.muted = isMuted;
+  muteBtn.textContent = isMuted ? '🔊 Unmute Music' : '🔇 Mute Music';
+});
+
+// 🧝‍♂️ Elf Jokes
+const elfJokePopup = document.getElementById('elfJokePopup');
+const elfJokeText = document.getElementById('elfJokeText');
+
+const elfJokes = [
+  "Why don’t elves use social media? They’re too busy wrapping things up!",
+  "What do you call an elf who sings? A wrapper!",
+  "Elves love coding — they’re great at loops and wrapping!",
+  "Santa’s elves tried stand-up comedy… but they kept cracking up!",
+  "Why did the elf get promoted? He sleighed his goals!"
+];
+
+function showElfJoke() {
+  const joke = elfJokes[Math.floor(Math.random() * elfJokes.length)];
+  elfJokeText.textContent = joke;
+  elfJokePopup.style.display = 'block';
+}
+
+function closeElfJoke() {
+  elfJokePopup.style.display = 'none';
+}
+
+</script>
+</body>
+</html>

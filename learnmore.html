@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qantas × Singapore Airlines</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #fff, #e0f7fa);
+      color: #333;
+    }
+
+    /* 🔥 Nav Bar */
+    .navbar {
+      background: #d50000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .nav-logo {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: #ff4d4d;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .bar {
+      height: 3px;
+      width: 25px;
+      background-color: white;
+      margin: 4px 0;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #d50000;
+        position: absolute;
+        top: 60px;
+        right: 30px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* 🔥 Page Content */
+    .logo-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin: 30px 0;
+    }
+
+    .logo-row img {
+      height: 80px;
+      transform: rotate(-10deg);
+    }
+
+    .cross {
+      font-size: 48px;
+      font-weight: bold;
+      color: #0077cc;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #d50000;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .section h2 {
+      color: #d50000;
+      margin-bottom: 10px;
+    }
+
+    .section p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .fun-fact {
+      background: #fff3f3;
+      border-left: 5px solid #d50000;
+      padding: 10px 20px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      margin: 60px 0 20px;
+    }
+
+    /* 🤖 Bot Launcher */
+    #help-launcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      cursor: pointer;
+    }
+
+    #help-launcher div:first-child {
+      background: #b00020;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 50px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    #help-launcher div:last-child {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 12px;
+      height: 12px;
+      background: #0078d4;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #0078d4;
+    }
+
+    #chat-box {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      font-family: 'Segoe UI', sans-serif;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    #chat-box header {
+      background: #b00020;
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+    }
+
+    #chat-log {
+      padding: 10px;
+      max-height: 250px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+
+    #chat-box input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #chat-box button {
+      margin-top: 8px;
+      background: #0078d4;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      width: 100%;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔥 Nav Bar -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo">Q×S Airlines</a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#" class="nav-link">Home</a></li>
+      <li><a href="aircraft-fleet.html" class="nav-link">Aircraft Fleet</a></li>
+      <li><a href="#" class="nav-link">About</a></li>
+      <li><a href="#" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </nav>
+
+  <!-- 🔥 Page Header -->
+  <h1>Qantas × Singapore Airlines</h1>
+  <p style="text-align:center;">Two legends. One sky. Infinite snacks.</p>
+
+  <div class="logo-row">
+    <img src="https://logos-world.net/wp-content/uploads/2023/01/Qantas-Logo.png" alt="Qantas Logo">
+    <div class="cross">×</div>
+    <img src="https://1000logos.net/wp-content/uploads/2020/04/Singapore-Airlines-Logo.png" alt="Singapore Airlines Logo">
+  </div>
+
+  <!-- 🔥 Sections -->
+  <div class="section">
+    <h2>🌏 About Qantas</h2>
+    <p>Founded in 1920, Qantas is the third oldest airline in the world. Its name stands for "Queensland and Northern Territory Aerial Services."</p>
+    <p>Qantas is known for its iconic red kangaroo logo, long-haul flights, and the ability to serve tomato juice at 35,000 feet without spilling it.</p>
+    <p>They once flew a plane with a giant koala painted on the side. No one knows why. It was majestic.</p>
+    <div class="fun-fact">✈️ Fun Fact: Qantas pilots are trained to land on runways shorter than your driveway. Almost.</div>
+  </div>
+
+  <div class="section">
+    <h2>🍜 Singapore Airlines Vibes</h2>
+    <p>Singapore Airlines is famous for its luxurious service, spicy noodles, and flight attendants who look like they stepped out of a fashion magazine.</p>
+    <p>They were the first airline to offer satellite-based inflight Wi-Fi, and their safety video once featured a ballet dancer doing a pirouette in the aisle.</p>
+    <p>Singapore Airlines also has a secret lounge called “The Private Room” that’s so exclusive,
+          <div class="fun-fact">🍹 Fun Fact: Singapore Airlines once served 1.2 million cans of Sprite in a single year. Hydration nation.</div>
+  </div>
+
+  <div class="section">
+    <h2>🚀 The Collab Nobody Expected</h2>
+    <p>Qantas and Singapore Airlines have teamed up to create the ultimate flying experience. Think double loyalty points, shared snack menus, and a joint playlist called “Sky Bangers Vol. 1.”</p>
+    <p>Passengers can now choose between kangaroo jerky and chili crab chips. The flight safety video features a kangaroo doing tai chi with a Singaporean lion dancer.</p>
+    <p>Rumor has it they’re working on a Roblox flight simulator where you can pilot a Qantas jet while eating Singapore noodles. Coming soon.</p>
+    <div class="fun-fact">🎮 Fun Fact: The partnership includes a Roblox lounge with pixelated peanuts and virtual turbulence.</div>
+  </div>
+
+  <div class="home-button" style="text-align:center; margin: 40px 0;">
+    <a href="index.html"><button style="padding: 12px 24px; font-size: 16px; background: #0077cc; color: white; border: none; border-radius: 25px; cursor: pointer;">🏠 Back to Home</button></a>
+  </div>
+
+  <div class="footer">
+    © 2025 Qantas × Singapore Airlines Fan Drop. Not affiliated with reality. Snacks not guaranteed.
+  </div>
+
+  <!-- 🤖 Bot Launcher -->
+  <div id="help-launcher" onclick="openChat()">
+    <div>Help</div>
+    <div></div>
+  </div>
+
+  <!-- 🤖 Chat Interface -->
+  <div id="chat-box">
+    <header>Qantas Assistant | BETA</header>
+    <div id="chat-log"></div>
+    <div style="padding: 10px; border-top: 1px solid #eee;">
+      <input type="text" id="chat-input" placeholder="Ask a question...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- 🔧 Scripts -->
+  <script>
+    function toggleMenu() {
+      document.getElementById("navMenu").classList.toggle("active");
+    }
+
+    let awaitingDestination = false;
+    let awaitingSnack = false;
+    let awaitingSeat = false;
+
+    function openChat() {
+      document.getElementById("chat-box").style.display = "block";
+      document.getElementById("help-launcher").style.display = "none";
+
+      const log = document.getElementById("chat-log");
+      log.innerHTML += `
+        <div style="margin-bottom: 10px;">
+          <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 10px;
+          max-width: 80%; float: left; clear: both;">
+            <strong>Bot:</strong> 👋 Welcome to Qantas Airlines! What's your dream destination today?
+          </div>
+        </div>
+      `;
+      awaitingDestination = true;
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("chat-input").value.trim();
+      const log = document.getElementById("chat-log");
+      if (!input) return;
+
+      log.innerHTML += `
+        <div style="margin-bottom: 10px;">
+          <div style="background: #eee; padding: 8px 12px; border-radius: 10px;
+          max-width: 80%; float: right; clear: both;">
+            <strong>You:</strong> ${input}
+          </div>
+        </div>
+      `;
+
+      let response = "";
+      const lower = input.toLowerCase();
+
+      if (awaitingDestination) {
+        response = `🗺️ Nice! ${input} sounds amazing. What’s your go-to in-flight snack?`;
+        awaitingDestination = false;
+        awaitingSnack = true;
+      } else if (awaitingSnack) {
+        response = `🍽️ Yum! ${input} is a solid choice. Window seat or aisle?`;
+        awaitingSnack = false;
+        awaitingSeat = true;
+      } else if (awaitingSeat) {
+        response = `🪑 Got it — ${input} seat. You're all set for takeoff! Need help with booking or baggage?`;
+        awaitingSeat = false;
+      } else if (lower.includes("nothing to do")) {
+        response = "😔 I'm sorry, I can't help with that. Maybe explore new destinations or try a new snack?";
+      } else if (lower.includes("when") && lower.includes("created")) {
+        response = "📅 Qantas was founded in 1920. Singapore Airlines launched in 1972. Legends of the sky!";
+      } else if (lower.includes("book") || lower.includes("ticket")) {
+        response = "🧾 Sure! Tell me your destination and I’ll help you book a flight.";
+        awaitingDestination = true;
+      } else if (lower.includes("baggage") || lower.includes("luggage")) {
+        response = "🧳 Economy passengers may check 1 bag up to 23kg. Want help adding more?";
+      } else {
+        const followUps = [
+          "What’s your favorite in-flight snack?",
+          "Would you rather fly Dreamliner or A380?",
+          "Window seat or aisle?",
+          "Have you ever flown with a kangaroo?",
+          "Do you like spicy noodles at 35,000 feet?",
+          "Which airline has better snacks: Qantas or Singapore?",
+          "Would you survive a 19-hour flight with only Air Salad?",
+          "If you could fly anywhere right now, where would you go?"
+        ];
+        const random = followUps[Math.floor(Math.random() * followUps.length)];
+        response = `🤖 ${random}`;
+      }
+
+      setTimeout(() => {
+        log.innerHTML += `
+          <div style="margin-bottom: 10px;">
+            <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 10px;
+            max-width: 80%; float: left; clear: both;">
+              <strong>Bot:</strong> ${response}
+            </div>
+          </div>
+        `;
+        log.scrollTop = log.scrollHeight;
+      }, 1000);
+
+      document.getElementById("chat-input").value = "";
+    }
+  </script>
+
+</body>
+</html>
+
