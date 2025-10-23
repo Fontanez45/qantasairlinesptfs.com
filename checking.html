@@ -3,306 +3,178 @@
 <head>
   <meta charset="UTF-8" />
   <title>Check-In | Qantas Roblox</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-      padding: 30px;
-      text-align: center;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #d6001c;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    input:disabled, select:disabled {
-      background-color: #eee;
-      color: #888;
-    }
-    #loadingOverlay, #finalOverlay, #errorOverlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      color: white;
-      font-size: 24px;
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    .spinner {
-      margin-top: 20px;
-      width: 50px;
-      height: 50px;
-      border: 6px solid #d6001c;
-      border-top: 6px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .checkmark, .xmark {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #28a745;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      animation: popIn 0.5s ease-out;
-      margin-bottom: 20px;
-    }
-    .xmark {
-      background-color: #d6001c;
-    }
-    .checkmark svg, .xmark svg {
-      width: 40px;
-      height: 40px;
-      fill: white;
-    }
-    @keyframes popIn {
-      0% { transform: scale(0); opacity: 0; }
-      60% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="halloween-theme">
 
-<div class="card" id="checkinCard">
-  <h2>Check-In</h2>
-  <div id="flightInfo"></div>
-  <div id="bookingForm" style="display:none;">
-    <label>Discord Name</label>
-    <input id="discordName" type="text" placeholder="Enter your Discord name" />
-    <label>Seat</label>
-    <select id="seatSelect">
-      <option>1A</option>
-      <option>2B</option>
-      <option>3C</option>
-      <option>4D</option>
-    </select>
-    <label>Baggage</label>
-    <select id="bagSelect">
-      <option>Carry-on only</option>
-      <option>Checked bag</option>
-      <option>Both</option>
-    </select>
-    <button id="confirmBtn" onclick="confirmBooking()">Confirm Booking</button>
-    <button id="cancelBtn" onclick="cancelBooking()" style="background:#555;">Cancel Booking</button>
+<header class="qantas-tab">
+  <div><strong>Qantas Roblox</strong></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#">Manage Booking</a>
+    <a href="httpsa://discord.gg/5Z77R4TE">Discord</a>
+    <a href="">Menu</a>
+  </nav>
+</header>
+
+<div class="tab-content active" style="margin-top: 50px;">
+  <div class="card" id="checkinCard">
+    <h2>Check-In</h2>
+    <div id="flightInfo"></div>
+    <div id="bookingForm" style="display:none;">
+      <label>Discord Name</label>
+      <input id="discordName" type="text" placeholder="Enter your Discord name" />
+      <label>Seat</label>
+      <select id="seatSelect">
+        <option>1A</option>
+        <option>2B</option>
+        <option>3C</option>
+        <option>4D</option>
+      </select>
+      <label>Baggage</label>
+      <select id="bagSelect">
+        <option>Carry-on only</option>
+        <option>Checked bag</option>
+        <option>Both</option>
+      </select>
+      <button id="confirmBtn" onclick="confirmBooking()">Confirm Booking</button>
+      <button id="cancelBtn" onclick="cancelBooking()" style="background:#555;">Cancel Booking</button>
+    </div>
+    <button onclick="goBack()">⬅️ Back to Home</button>
   </div>
-  <button onclick="goBack()">⬅️ Back to Home</button>
 </div>
 
-<div id="loadingOverlay">
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); color: var(--accent-orange); font-size: 24px; z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
   <div class="spinner"></div>
   <p>Processing your booking...</p>
 </div>
 
-<div id="finalOverlay"></div>
-<div id="errorOverlay"></div>
+<div id="finalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); color: var(--accent-orange); font-size: 24px; z-index: 9999; justify-content: center; align-items: center; flex-direction: column;"></div>
+<div id="errorOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); color: var(--accent-orange); font-size: 24px; z-index: 9999; justify-content: center; align-items: center; flex-direction: column;"></div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
   const flight = JSON.parse(localStorage.getItem("selectedFlight"));
-  const booking = JSON.parse(localStorage.getItem("bookingInfo"));
-  const credit = JSON.parse(localStorage.getItem("flightCredit"));
-  const creditUsed = localStorage.getItem("flightCreditUsed") === "true";
   const info = document.getElementById("flightInfo");
   const form = document.getElementById("bookingForm");
+  const refCode = "QR" + Math.floor(Math.random() * 10000);
+  let booking = JSON.parse(localStorage.getItem("bookingInfo")) || {};
+
+  localStorage.setItem("bookingInfo", JSON.stringify({ ...booking, referenceCode: refCode, flightCode: flight?.flightCode }));
 
   if (!flight) {
     info.innerHTML = `<p class="error">❌ No flight selected. Please book a flight first.</p>`;
     form.style.display = "none";
-    return;
-  }
-
-  if (credit && creditUsed) {
-    const creditMessage = document.createElement("div");
-    creditMessage.style.background = "#e6fff2";
-    creditMessage.style.borderLeft = "6px solid #28a745";
-    creditMessage.style.padding = "20px";
-    creditMessage.style.borderRadius = "10px";
-    creditMessage.style.color = "#28a745";
-    creditMessage.style.fontWeight = "bold";
-    creditMessage.style.boxShadow = "0 0 10px rgba(40,167,69,0.3)";
-    creditMessage.style.animation = "popIn 0.5s ease-out";
-    creditMessage.style.marginBottom = "20px";
-    creditMessage.innerHTML = `
-      <div style="font-size:2rem;">🎟️</div>
-      Flight Credit Used: <strong>$${credit.amount}</strong><br>
-      Perks Applied:<br>
-      ${credit.perks.map(p => `- ${p}`).join("<br>")}
-    `;
-    info.appendChild(creditMessage);
-  }
-
-  info.innerHTML += `
-    <p>🛫 Flight ${flight.flightCode}</p>
-    <p>From: ${flight.from}</p>
-    <p>To: ${flight.to}</p>
-    <p>Date: ${flight.date}</p>
-    <p>Departure Time: ${flight.time}</p>
-    <p>Gate: ${flight.gate}</p>
-    <p>Aircraft: ${flight.aircraft}</p>
-    <p><strong>Reference Code:</strong> ${booking?.referenceCode || "Pending"}</p>
-  `;
-  form.style.display = "block";
-
-  if (booking && booking.flightCode === flight.flightCode) {
-    document.getElementById("discordName").value = booking.name;
-    document.getElementById("seatSelect").value = booking.seat;
-    document.getElementById("bagSelect").value = booking.bag;
-    lockForm();
   } else {
-    localStorage.removeItem("bookingInfo");
-    unlockForm();
-  }
-
-  document.getElementById("confirmBtn").addEventListener("click", confirmBooking);
-  document.getElementById("cancelBtn").addEventListener("click", cancelBooking);
-});
-
-function lockForm() {
-  document.getElementById("discordName").disabled = true;
-  document.getElementById("seatSelect").disabled = true;
-  document.getElementById("bagSelect").disabled = true;
-  document.getElementById("confirmBtn").disabled = true;
-  document.getElementById("confirmBtn").innerText = "✅ Already Booked";
-}
-
-function unlockForm() {
-  document.getElementById("discordName").disabled = false;
-  document.getElementById("seatSelect").disabled = false;
-  document.getElementById("bagSelect").disabled = false;
-  document.getElementById("confirmBtn").disabled = false;
-  document.getElementById("confirmBtn").innerText = "Confirm Booking";
-}
-
-function confirmBooking() {
-  const name = document.getElementById("discordName").value.trim();
-  const seat = document.getElementById("seatSelect").value;
-  const bag = document.getElementById("bagSelect").value;
-  const flight = JSON.parse(localStorage.getItem("selectedFlight"));
-
-  if (!name) {
-    const error = document.getElementById("errorOverlay");
-    error.innerHTML = `
-      <div class="xmark">
-        <svg viewBox="0 0 52 52">
-          <path d="M26 0C11.64 0 0 11.64 0 26s11.64 26 26 26 26-11.64 26-26S40.36 0 26 0zm-6-30l6 6 6-6 2 2-6 6 6 6-2 2-6-6-6 6-2-2 6-6-6-6z"/>
-        </svg>
-      </div>
-      <p>❌ Please fill out your Discord name ➕</p>
+    info.innerHTML = `
+      <p>🛫 Flight ${flight.flightCode}</p>
+      <p>From: ${flight.from}</p>
+      <p>To: ${flight.to}</p>
+      <p>Date: ${flight.date}</p>
+      <p><strong>Reference Code:</strong> ${refCode}</p>
     `;
-    error.style.display = "flex";
-    setTimeout(() => error.style.display = "none", 2000);
-    return;
+    form.style.display = "block";
+
+    if (booking.name && booking.flightCode === flight.flightCode) {
+      document.getElementById("discordName").value = booking.name;
+      document.getElementById("seatSelect").value = booking.seat;
+      document.getElementById("bagSelect").value = booking.bag;
+      lockForm();
+    }
   }
 
-  const refCode = "QR" + Math.floor(Math.random() * 10000);
-  const fullBooking = {
-    name,
-    seat,
-    bag,
-    referenceCode: refCode,
-    flightCode: flight.flightCode,
-    from: flight.from,
-    to: flight.to,
-    date: flight.date,
-    time: flight.time,
-    gate: flight.gate,
-    aircraft: flight.aircraft
-  };
+  function lockForm() {
+    document.getElementById("discordName").disabled = true;
+    document.getElementById("seatSelect").disabled = true;
+    document.getElementById("bagSelect").disabled = true;
+    document.getElementById("confirmBtn").disabled = true;
+    document.getElementById("confirmBtn").innerText = "✅ Already Booked";
+  }
 
-  localStorage.setItem("bookingInfo", JSON.stringify(fullBooking));
-  lockForm();
+  function cancelBooking() {
+    localStorage.removeItem("bookingInfo");
 
-  const loading = document.getElementById("loadingOverlay");
-  loading.innerHTML = `
-    <div class="spinner"></div>
-    <p style="color:#d6001c;">Confirming your booking...</p>
-  `;
-  loading.style.display = "flex";
+    const overlay = document.getElementById("loadingOverlay");
+    overlay.innerHTML = `
+      <div class="spinner"></div>
+      <p>Canceling your booking...</p>
+    `;
+    overlay.style.display = "flex";
 
-  setTimeout(() => {
-    loading.style.display = "none";
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1400);
+  }
+
+  function confirmBooking() {
+    const name = document.getElementById("discordName").value.trim();
+    const seat = document.getElementById("seatSelect").value;
+    const bag = document.getElementById("bagSelect").value;
+
+    if (!name) {
+      const error = document.getElementById("errorOverlay");
+      error.innerHTML = `
+        <div class="xmark">
+          <svg viewBox="0 0 52 52">
+            <path d="M26 0C11.64 0 0 11.64 0 26s11.64 26 26 26 26-11.64 26-26S40.36 0 26 0zm0 48C13.215 48 4 38.785 4 26S13.215 4 26 4s22 9.215 22 22-9.215 22-22 22zm-6-30l6 6 6-6 2 2-6 6 6 6-2 2-6-6-6 6-2-2 6-6-6-6z"/>
+          </svg>
+        </div>
+        <p>❌ Please fill out your Discord name ➕</p>
+      `;
+      error.style.display = "flex";
+      setTimeout(() => error.style.display = "none", 2000);
+      return;
+    }
+
+    const fullBooking = {
+      name,
+      seat,
+      bag,
+      referenceCode: refCode,
+      flightCode: flight.flightCode,
+      ...flight
+    };
+    localStorage.setItem("bookingInfo", JSON.stringify(fullBooking));
+    lockForm();
+
     const final = document.getElementById("finalOverlay");
     final.innerHTML = `
-      <div class="checkmark">
-        <svg viewBox="0 0 52 52">
-          <path d="M26 0C11.64 0 0 11.64 0 26s11.64 26 26 26 26-11.64 26-26S40.36 0 26 0zm-4 36l-10-10 2.8-2.8L22 28.4l15.2-15.2L40 16l-18 20z"/>
-        </svg>
-      </div>
-      <p>Booking Confirmed!</p>
-      <p>Please fill out the reference sheet with this code ➕</p>
-      <p style="font-weight:bold; font-size: 28px;">${refCode}</p>
+      <div class="spinner"></div>
+      <p>Processing your booking...</p>
     `;
     final.style.display = "flex";
 
     setTimeout(() => {
+      final.innerHTML = `
+        <div class="checkmark">
+          <svg viewBox="0 0 52 52">
+            <path d="M26 0C11.64 0 0 11.64 0 26s11.64 26 26 26 26-11.64 26-26S40.36 0 26 0zm0 48C13.215 48 4 38.785 4 26S13.215 4 26 4s22 9.215 22 22-9.215 22-22 22zM21 37l-10-10 2-2 8 8 16-16 2 2L21 37z"/>
+          </svg>
+        </div>
+        <p>Booking Confirmed!</p>
+        <p>Please fill out the reference sheet with this code ➕</p>
+        <p style="font-weight:bold; font-size: 28px;">${refCode}</p>
+      `;
+      final.style.display = "flex";
+    }, 2000);
+
+    setTimeout(() => {
       window.location.href = "index.html";
-    }, 3000);
-  }, 2500);
-}
+    }, 5000);
+  }
 
-
-function cancelBooking() {
-  localStorage.removeItem("bookingInfo");
-
-  const overlay = document.getElementById("loadingOverlay");
-  overlay.innerHTML = `
-    <div class="spinner"></div>
-    <p>Canceling your booking...</p>
-  `;
-  overlay.style.display = "flex";
-
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 1400);
-}
-
-function goBack() {
-  const overlay = document.getElementById("loadingOverlay");
-  overlay.innerHTML = `
-    <div class="spinner"></div>
-    <p>Returning to home page...</p>
-  `;
-  overlay.style.display = "flex";
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 2000);
-}
+  function goBack() {
+    const overlay = document.getElementById("loadingOverlay");
+    overlay.innerHTML = `
+      <div class="spinner"></div>
+      <p>Returning to home page...</p>
+    `;
+    overlay.style.display = "flex";
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  }
 </script>
 
 </body>
 </html>
-
-          

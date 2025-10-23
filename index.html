@@ -1,1242 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="UTF-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qantas Roblox</title>
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-
-
-
-
-
-  
-  <style>
-
-
-/* ✅ Mobile styles for screens under 600px */
-@media screen and (max-width: 600px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
-  }
-
-  nav {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  nav a {
-    margin-left: 0;
-    font-size: 16px;
-  }
-
-  .hero {
-    height: 200px;
-  }
-
-  .hero-text {
-    padding: 15px;
-    font-size: 14px;
-  }
-
-  .hero-text h1 {
-    font-size: 18px;
-  }
-
-  .hero-text p {
-    font-size: 14px;
-  }
-
-  .hero-text button {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
-
-  .tab {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
-
-  .tab-content {
-    padding: 20px;
-  }
-
-  .glow-btn {
-    font-size: 16px;
-    padding: 10px 20px;
-  }
-
-  #pumpkin {
-    width: 60px;
-  }
-}
-
-
-    #loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #1a1a1a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-#pumpkin {
-  width: 100px;
-  animation: roll 2s linear infinite;
-}
-
-@keyframes roll {
-  0% { transform: translateX(-100px) rotate(0deg); }
-  50% { transform: translateX(100px) rotate(180deg); }
-  100% { transform: translateX(-100px) rotate(360deg); }
-}
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-    }
-    body.black-text * {
-      color: black !important;
-    }
-    body.red-text * {
-      color: red !important;
-    }
-    header {
-      background-color: #d6001c;
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    nav a {
-      color: white;
-      margin-left: 20px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .hero {
-      position: relative;
-      height: 300px;
-      overflow: hidden;
-    }
-    .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      z-index: 0;
-    }
-    .slide.active {
-      opacity: 1;
-      z-index: 1;
-    }
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .hero-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0,0,0,0.6);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      z-index: 2;
-    }
-    .hero-text h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-    .hero-text p {
-      margin: 10px 0;
-      font-size: 16px;
-    }
-    .hero-text button {
-      background-color: #ffffff;
-      color: #d6001c;
-      border: none;
-      padding: 10px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .dots {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      z-index: 2;
-    }
-    .dot {
-      height: 12px;
-      width: 12px;
-      margin: 0 5px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      cursor: pointer;
-    }
-    .dot.active {
-      background-color: #d6001c;
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      background-color: #fff;
-      border-bottom: 2px solid #ddd;
-    }
-    .tab {
-      padding: 15px 30px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #d6001c;
-      border-bottom: 3px solid transparent;
-    }
-    .tab.active {
-      border-bottom: 3px solid #d6001c;
-      background-color: #f0f0f0;
-    }
-    .tab-content {
-      display: none;
-      padding: 30px;
-      max-width: 700px;
-      margin: 0 auto;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .tab-content.active {
-      display: block;
-    }
-    .tab-content label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    .tab-content input, .tab-content select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      font-size: 16px;
-    }
-    .tab-content button {
-      background-color: #d6001c;
-      color: white;
-      padding: 10px;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 20px;
-    }
-    #bookNowBtn {
-      text-align: center;
-      margin: 20px auto;
-    }
-    .glow-btn {
-      background-color: orange;
-      color: black;
-      padding: 12px 24px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 0 15px orange;
-      transition: all 0.3s ease;
-    }
-    .glow-btn:hover {
-      box-shadow: 0 0 25px #ff6600;
-      transform: scale(1.05);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="white-text">
-
+<body>
 
   <!-- 🍪 Cookie Consent Banner -->
-<div id="cookie-banner">
-  <div class="cookie-box">
-    <p>
-      Delta and our third-party partners access and store data on your device as necessary to provide this website and for analytics, enhanced functionality, and advertising.
-      <br><br>
-      <a href="/terms-of-use.html" target="_blank">Terms of Use</a> • 
-      <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
-    </p>
-    <button onclick="acceptCookies()">I Understand</button>
-  </div>
-</div>
-
-<style>
-#cookie-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  color: #333;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-  opacity: 0;
-  transform: translateY(100%);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  z-index: 9999;
-}
-
-#cookie-banner.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.cookie-box {
-  padding: 20px;
-  max-width: 800px;
-  margin: auto;
-  text-align: center;
-}
-
-.cookie-box p {
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.cookie-box a {
-  color: #0078d4;
-  text-decoration: underline;
-  margin: 0 5px;
-}
-
-.cookie-box button {
-  margin-top: 15px;
-  background: #d6001c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.cookie-box button:hover {
-  background: #a80016;
-
-  #cookie-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  color: #333;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-  opacity: 0;
-  transform: translateY(100%);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  z-index: 9999;
-}
-
-#cookie-banner.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-}
-</style>
-
-  <div id="loading-screen">
-  <img src="https://gallery.yopriceville.com/downloadfullsize/send/3262" alt="Rolling Pumpkin" id="pumpkin">
-</div>
-
-
-
-<header class="qantas-tab">
-  <div><strong>Qantas Roblox</strong></div>
-  <nav>
-    <a href="#">Home</a>
-    <a href="checking.html">Manage Booking</a>
-    <a href="https://discord.gg/5Z77R4TE">Discord</a>
-    <a href="">Menu</a>
-  </nav>
-</header>
-
-
-
-<div class="hero">
-  <div class="slide active"><img src="https://i.imgur.com/zLqZVO3.png" alt="Slide 1"></div>
-  <div class="slide"><img src="https://i.imgur.com/fe8vTZz.png" alt="Slide 2"></div>
-  <div class="slide"><img src="https://i.imgur.com/cwhwdY4.png" alt="Slide 3"></div>
-
-  <div class="hero-text">
-    <h1>Australia starts with Qantas Roblox</h1>
-    <p>Happy Halloween, from the "Spirit" of Australia 👻🎃</p>
-    <button onclick="showTab('book')">DISCOVER AUSTRALIA IN THE SKY</button>
-  </div>
-
-  <div class="dots">
-    <span class="dot active" onclick="showSlide(0)"></span>
-    <span class="dot" onclick="showSlide(1)"></span>
-    <span class="dot" onclick="showSlide(2)"></span>
-  </div>
-</div>
-
-<div class="tabs">
-  <div class="tab active" onclick="showTab('book')">Book a trip</div>
-  <div class="tab" onclick="showTab('status')">Flight status</div>
-  <div class="tab" onclick="showTab('credit')">Your Flight Credit</div>
-</div>
-
-<div id="book" class="tab-content active">
-  <h2>Available Flights</h2>
-  <div id="bookNowBtn"></div>
-  <a href="flight-status.html" class="btn flight-status">Flight Status | BETA </a>
-
-<style>
-
-.btn.flight-status {
-  background-color: #0077cc;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  margin-left: 10px;
-}
-.btn.flight-status:hover {
-  background-color: #005fa3;
-}
-
-
-
-</style>
-  
-</div>
-
-<div id="countdown" style="font-size:24px; font-weight:bold; margin-top:20px;"></div>
-<p id="teaser" style="font-size:18px; color:#d6001c; margin-top:10px;">
-  👻 Something spooky is landing soon... Qantas is going full Halloween.
-</p>
-
-<div id="status" class="tab-content">
-  <h2>Check Flight Status</h2>
-  <input id="bookingRef" type="text" placeholder="Enter Reference Code" />
-  <input id="lastName" type="text" placeholder="Enter Discord Name" />
-  <button onclick="checkBookingStatus()">Check Status</button>
-  <div id="statusInfo" style="margin-top:20px;"></div>
-</div>
-
-
-
-<div id="credit" class="tab-content" style="display:flex; justify-content:center; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-top:3rem;">
-  <div style="flex:1; min-width:300px;">
-    <h2 style="color:#d6001c;">USE YOUR FLIGHT CREDIT</h2>
-    <input id="flightCreditCode" type="text" placeholder="Enter flight credit code" style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:6px; border:1px solid #ccc;" />
-    <button class="glow-btn" onclick="applyFlightCredit()" style="width:100%; padding:0.75rem; font-weight:bold;">Apply Credit</button>
-    <div id="creditLoader" style="display:none; margin-top:1rem; font-weight:bold; color:#007bff;">⏳ Checking credit...</div>
-  </div>
-
-  <div id="creditFeedback" style="flex:1; min-width:300px;"></div>
-</div>
-
-
-
-<!-- Help Launcher -->
-<div id="help-launcher" onclick="openChat()" style="
-position: fixed;
-bottom: 20px;
-right: 20px;
-z-index: 9999;
-cursor: pointer;
-">
-<div style="
-  background: #b00020;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 50px;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-">Help</div>
-<div style="
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 12px;
-  height: 12px;
-  background: #0078d4;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #0078d4;
-"></div>
-</div>
-
-<!-- Chat Interface -->
-<div id="chat-box" style="
-display: none;
-position: fixed;
-bottom: 80px;
-right: 20px;
-width: 320px;
-background: #fff;
-border-radius: 10px;
-box-shadow: 0 0 15px rgba(0,0,0,0.2);
-font-family: 'Segoe UI', sans-serif;
-z-index: 9999;
-overflow: hidden;
-">
-<div style="background: #b00020; color: white; padding: 12px; font-weight: bold;">
-  Qantas Assistant | BETA 
-</div>
-<div id="chat-log" style="padding: 10px; max-height: 250px; overflow-y: auto; font-size: 0.9rem;"></div>
-<div style="padding: 10px; border-top: 1px solid #eee;">
-  <input type="text" id="chat-input" placeholder="Ask a question..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
-  <button onclick="sendMessage()" style="margin-top: 8px; background: #0078d4; color: white; border: none; padding: 8px 12px; border-radius: 5px; width: 100%; font-weight: bold;">Send</button>
-</div>
-</div>
-
-<script>
-
-let awaitingDestination = false;
-
-function openChat() {
-  document.getElementById("chat-box").style.display = "block";
-  document.getElementById("help-launcher").style.display = "none";
-
-  const log = document.getElementById("chat-log");
-  log.innerHTML += `
-    <div style="margin-bottom: 10px;">
-      <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 10px;
-      max-width: 80%; float: left; clear: both; animation: fadeIn 0.5s ease;">
-        <strong>Bot:</strong> 👋 Welcome to Qantas Airlines! I'm here to help with flights, bookings, or baggage.
-      </div>
-    </div>
-  `;
-  log.scrollTop = log.scrollHeight;
-}
-
-function sendMessage() {
-  const input = document.getElementById("chat-input").value.trim();
-  const log = document.getElementById("chat-log");
-
-  if (!input) return;
-
-  log.innerHTML += `
-    <div style="margin-bottom: 10px;">
-      <div style="background: #eee; padding: 8px 12px; border-radius: 10px;
-      max-width: 80%; float: right; clear: both; animation: fadeIn 0.5s ease;">
-        <strong>You:</strong> ${input}
-      </div>
-    </div>
-  `;
-
-  const typingBubble = document.createElement("div");
-  typingBubble.id = "typing-bubble";
-  typingBubble.innerHTML = `
-    <div style="margin-bottom: 10px;">
-      <div class="typing-indicator" style="background: #f0f8ff; padding: 8px 12px;
-      border-radius: 10px; max-width: 80%; float: left; clear: both; font-style: italic;">
-        <strong>Bot:</strong> <span class="typing-indicator"></span>
-      </div>
-    </div>
-  `;
-  log.appendChild(typingBubble);
-  log.scrollTop = log.scrollHeight;
-
-  const lower = input.toLowerCase();
-  let response = "";
-
-  const greetings = ["wsg", "hello", "hi", "hey", "yo", "sup"];
-  const okWords = ["ok", "okay", "alright", "cool", "fine", "got it"];
-  const isGreeting = greetings.some(g => lower.includes(g));
-  const isOk = okWords.some(o => lower === o || lower.includes(` ${o}`));
-
-  if (awaitingDestination) {
-    const words = input.split(" ");
-    const lastWord = words[words.length - 1];
-    response = `🗺️ Got it — you're heading to <strong>${lastWord}</strong>. Check our <a href="/book.html">flight booking page</a> to see availability.`;
-    awaitingDestination = false;
-  } else if (isGreeting) {
-    response = "👋 I'm here to help! Welcome to Qantas Airlines.";
-  } else if (isOk) {
-    const okReplies = [
-      "👍 Got it! Let me know if you need anything else.",
-      "👌 All set. Safe travels with Qantas!",
-      "✈️ Cool. I’m here if you need help with flights or baggage.",
-      "✅ Okay! You’re good to go."
-    ];
-    response = okReplies[Math.floor(Math.random() * okReplies.length)];
-  } else if (lower.includes("flight")) {
-    response = "✈️ The next available flight is QF12 from JFK to SYD, departing at 9:45 AM. Status: On Time ✅";
-  } else if (
-    lower.includes("booking") ||
-    lower.includes("reserve") ||
-    lower.includes("ticket") ||
-    lower.includes("book")
-  ) {
-    response = "🧾 Sure! To book a flight, visit our booking page or tell me your destination.";
-    awaitingDestination = true;
-  } else if (lower.includes("baggage") || lower.includes("luggage")) {
-    response = "🧳 Economy passengers may check 1 bag up to 23kg. Additional fees apply for extra or overweight bags.";
-  } else {
-    response = "🙁 I'm sorry, I can only assist with flight details, bookings, or baggage inquiries at the moment.";
-  }
-
-  setTimeout(() => {
-    typingBubble.innerHTML = `
-      <div style="margin-bottom: 10px;">
-        <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 10px;
-        max-width: 80%; float: left; clear: both; animation: fadeIn 0.5s ease;">
-          <strong>Bot:</strong> ${response}
-        </div>
-      </div>
-    `;
-    log.scrollTop = log.scrollHeight;
-  }, 2000);
-
-  document.getElementById("chat-input").value = "";
-}
-
-
-</script>
-
-
-
-
-
-
-
-
-
-<script>
-
-  
-
-function showTab(tabId) {
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-  document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
-  document.getElementById(tabId).classList.add('active');
-
-  const creditSection = document.getElementById("credit");
-  creditSection.style.display = tabId === "credit" ? "flex" : "none";
-}
-
-function applyFlightCredit() {
-  const code = document.getElementById("flightCreditCode").value.trim();
-  const feedback = document.getElementById("creditFeedback");
-  const loader = document.getElementById("creditLoader");
-
-  const validCredits = {
-    "QANTAS50": { amount: 50, perks: ["10% Discount"] },
-    "TESTING": { amount: 100, perks: ["20% Discount", "Free First-Class Upgrade"] },
-    "FLYVIP": { amount: 150, perks: ["30% Discount", "First-Class", "Lounge Access"] },
-    "OPEN25": { amount: 500, perks: ["25% Discount", "Free First-Class Upgrade" ] }
-  };
-
-  
-
-  feedback.innerHTML = "";
-  loader.style.display = "block";
-
-  setTimeout(() => {
-    loader.style.display = "none";
-
-    if (!code || !validCredits[code]) {
-      localStorage.removeItem("flightCredit");
-      localStorage.removeItem("flightCreditUsed");
-      feedback.innerHTML = `
-        <div style="background:#fff3f3; border-left:6px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; box-shadow:0 0 10px rgba(214,0,28,0.3); animation: fadeIn 0.5s ease;">
-          <div style="font-size:2rem;">❌</div>
-          Invalid flight credit code<br>
-          <div style="font-size:2.5rem;">😢</div>
-        </div>
-      `;
-      return;
-    }
-
-    const credit = validCredits[code];
-    localStorage.setItem("flightCredit", JSON.stringify({ code, ...credit }));
-    localStorage.removeItem("flightCreditUsed");
-
-    feedback.innerHTML = `
-      <div style="background:#e6fff2; border-left:6px solid #28a745; padding:20px; border-radius:10px; color:#28a745; font-weight:bold; box-shadow:0 0 10px rgba(40,167,69,0.3); animation: fadeIn 0.5s ease;">
-        <div style="font-size:2rem;">✅</div>
-        Flight Credit Applied: <strong>$${credit.amount}</strong><br><br>
-        Perks Unlocked:<br>
-        ${credit.perks.map(p => `- ${p}`).join("<br>")}<br><br>
-        <button onclick="useFlightCredit()" style="margin-top:10px; padding:10px 20px; background:#007bff; color:white; border:none; border-radius:6px; font-weight:bold;">Use Credit</button>
-      </div>
-    `;
-  }, 2500);
-}
-
-function useFlightCredit() {
-  localStorage.setItem("flightCreditUsed", "true");
-
-  const feedback = document.getElementById("creditFeedback");
-  feedback.innerHTML = `
-    <div style="background:#fffbe6; border-left:6px solid #ffc107; padding:20px; border-radius:10px; color:#856404; font-weight:bold; box-shadow:0 0 10px rgba(255,193,7,0.3); animation: fadeIn 0.5s ease;">
-      <div style="font-size:2rem;">🎟️</div>
-      Flight credit marked as <strong>USED</strong>!<br>
-      You’ll see it applied in your booking.
-    </div>
-  `;
-}
-
-function acceptCookies() {
-  localStorage.setItem("cookieConsent", "accepted");
-  const banner = document.getElementById("cookie-banner");
-  if (banner) {
-    banner.style.opacity = "0";
-    banner.style.transform = "translateY(100%)";
-    setTimeout(() => banner.style.display = "none", 600);
-  }
-}
-
-function rejectCookies() {
-  localStorage.setItem("cookieConsent", "rejected");
-  const banner = document.getElementById("cookie-banner");
-  if (banner) {
-    banner.style.opacity = "0";
-    banner.style.transform = "translateY(100%)";
-    setTimeout(() => banner.style.display = "none", 600);
-  }
-}
-
-window.addEventListener("load", () => {
-  const consent = localStorage.getItem("cookieConsent");
-  const banner = document.getElementById("cookie-banner");
-  if (banner && consent !== "accepted" && consent !== "rejected") {
-    setTimeout(() => {
-      banner.classList.add("show");
-    }, 3200); // ⏱️ 1.5 second delay before fade-in
-  }
-});
-
-
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const loader = document.getElementById("loading-screen");
-    if (loader) {
-      loader.style.display = "none";
-    }
-  }, 2000);
-});
-
-let selectedFlight = {
-  from: "Sydney (SYD)",
-  to: "Los Angeles (LAX)",
-  date: "2025-11-10",
-  flightCode: "QF666",
-  time: "2:30 PM",
-  gate: "A1",
-  aircraft: "Boeing 787 Dreamliner",
-  status: "❌ Postponed" // Change to ✔ On Time, ❌ Cancelled, or ❌ Postponed
-};
-
-function showSlide(index) {
-  const slides = document.querySelectorAll(".slide");
-  const dots = document.querySelectorAll(".dot");
-  slides.forEach((slide, i) => {
-    slide.classList.remove("active");
-    dots[i].classList.remove("active");
-  });
-  slides[index].classList.add("active");
-  dots[index].classList.add("active");
-}
-
-let slideIndex = 0;
-setInterval(() => {
-  slideIndex = (slideIndex + 1) % 3;
-  showSlide(slideIndex);
-}, 5000);
-
-function showTab(tabId) {
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-  document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
-  document.getElementById(tabId).classList.add('active');
-}
-
-function loadLocalFlight() {
-  const bookNowBtn = document.getElementById("bookNowBtn");
-  bookNowBtn.innerHTML = `
-    <div style="background:#fff; border:2px solid #007bff; padding:20px; border-radius:10px;">
-      <h3>Flight ${selectedFlight.flightCode}</h3>
-      <p><strong>From:</strong> ${selectedFlight.from}</p>
-      <p><strong>To:</strong> ${selectedFlight.to}</p>
-      <p><strong>Departure Time:</strong> ${selectedFlight.date}, ${selectedFlight.time}</p>
-      <p><strong>Aircraft:</strong> ${selectedFlight.aircraft}</p>
-      <p><strong>Gate:</strong> ${selectedFlight.gate}</p>
-      <p><strong>Status:</strong> ${selectedFlight.status}</p>
-      <button onclick="confirmBooking()" class="glow-btn">Book Now</button>
-    </div>
-  `;
-}
-
-function confirmBooking() {
-  localStorage.setItem("selectedFlight", JSON.stringify(selectedFlight));
-  localStorage.removeItem("bookingInfo");
-  window.location.href = "checking.html";
-}
-
-function checkBookingStatus() {
-  const ref = document.getElementById("bookingRef").value.trim();
-  const name = document.getElementById("lastName").value.trim();
-  const booking = JSON.parse(localStorage.getItem("bookingInfo"));
-  const statusInfo = document.getElementById("statusInfo");
-
-  statusInfo.innerHTML = "";
-
-  if (!ref || !name) {
-    statusInfo.innerHTML = `<div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">❌ Please enter both your reference code and Discord name.</div>`;
-    return;
-  }
-
-  if (!booking || !booking.referenceCode || !booking.name) {
-    statusInfo.innerHTML = `<div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">❌ No booking found. Try again.</div>`;
-    return;
-  }
-
-  if (booking.referenceCode !== ref || booking.name.toLowerCase() !== name.toLowerCase()) {
-    statusInfo.innerHTML = `<div style="background:#fff; border:2px solid #d6001c; padding:20px; border-radius:10px; color:#d6001c; font-weight:bold; text-align:center; max-width:500px; margin:20px auto;">❌ Invalid reference code or Discord name.</div>`;
-    return;
-  }
-
-  showTab("status");
-  const statusColor =
-    selectedFlight.status.includes("On Time") ? "#28a745" :
-    selectedFlight.status.includes("Delayed") ? "#ffc107" :
-    (selectedFlight.status.includes("Cancelled") || selectedFlight.status.includes("Postponed")) ? "#d6001c" : "#000";
-
-  statusInfo.innerHTML = `
-    <div style="background:#fff; border:2px solid #007bff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); max-width:500px; margin:20px auto;">
-      <h3>🛫 Flight Status</h3>
-      <p><strong>Passenger:</strong> ${booking.name}</p>
-      <p><strong>Flight:</strong> ${booking.flightCode}</p>
-      <p><strong>From:</strong> ${booking.from}</p>
-      <p><strong>To:</strong> ${booking.to}</p>
-      <p><strong>Date:</strong> ${booking.date}</p>
-      <p><strong>Departure Time:</strong> ${booking.time}</p>
-      <p><strong>Gate:</strong> ${booking.gate}</p>
-      <p><strong>Seat:</strong> ${booking.seat}</p>
-      <p><strong>Baggage:</strong> ${booking.bag}</p>
-      <p><strong>Aircraft:</strong> ${booking.aircraft}</p>
-      <p><strong>Status:</strong> <span style="color:${statusColor}; font-weight:bold;">${selectedFlight.status}</span></p>
-      <p><strong>Reference Code:</strong> <span style="font-weight:bold; color:#d6001c;">${booking.referenceCode}</span></p>
-    </div>
-  `;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadLocalFlight();
-});
-
-const countdownTarget = new Date("2025-10-13T00:00:00");
-
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = countdownTarget.getTime() - now;
-
-  if (distance <= 0) {
-    document.getElementById("countdown").innerHTML = "🎃 Website Updated!";
-    document.getElementById("teaser").innerHTML = "🕸️ Halloween Mode Activated!";
-    activateHalloweenMode();
-    triggerJumpScare();
-    clearInterval(timer);
-    return;
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  document.getElementById("countdown").innerHTML =
-    `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until Halloween Qantas lands`;
-}
-
-function activateHalloweenMode() {
-  document.body.classList.remove("black-text");
-  document.body.classList.add("red-text");
-  document.body.style.backgroundColor = "#1a1a1a";
-  document.body.style.fontFamily = "'Creepster', cursive";
-
-  // 🕸️ Removed corner spiderwebs
-
-  const teaser = document.getElementById("teaser");
-  if (teaser) {
-    teaser.style.color = "orange";
-    teaser.style.textShadow = "0 0 10px orange";
-    teaser.innerHTML = "🕸️ Halloween Mode Activated!";
-  }
-
-  const pumpkinRow = document.createElement("div");
-  pumpkinRow.style.fontSize = "40px";
-  pumpkinRow.style.marginTop = "20px";
-  pumpkinRow.style.textAlign = "center";
-  pumpkinRow.innerHTML = "🎃 🎃 🎃 🎃 🎃";
-  document.body.appendChild(pumpkinRow);
-
-  const promoImage = document.createElement("div");
-  promoImage.style.margin = "30px auto";
-  promoImage.style.maxWidth = "600px";
-  promoImage.innerHTML = `
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz9vXpQzbFclTFXkWrLF2PIRpacnN9ZU5NzQ&s" alt="Halloween Promo" style="width:100%; border-radius:10px; box-shadow:0 0 20px orange;">
-  `;
-  document.body.appendChild(promoImage);
-
-  const spider = document.createElement("img");
-  
-  
-  spider.style.position = "fixed";
-  spider.style.bottom = "20px";
-  spider.style.right = "20px";
-  spider.style.width = "80px";
-  spider.style.zIndex = "9999";
-  spider.style.filter = "drop-shadow(0 0 10px orange)";
-  document.body.appendChild(spider);
-}
-
-
-
-function triggerJumpScare() {
-  const scare = document.createElement("div");
-  scare.innerHTML = `
-    <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:10000; display:flex; align-items:center; justify-content:center;">
-      <img src="https://i.ytimg.com/vi/cD--BFcveeY/maxresdefault.jpg" alt="Scare" style="width:300px; animation: shake 0.5s infinite;">
-    </div>
-    <style>
-      @keyframes shake {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(5deg); }
-        50% { transform: rotate(-5deg); }
-        75% { transform: rotate(5deg); }
-        100% { transform: rotate(0deg); }
-      }
-    </style>
-  `;
-  document.body.appendChild(scare);
-  setTimeout(() => scare.remove(), 3000);
-}
-
-
-const timer = setInterval(updateCountdown, 1000);
-updateCountdown();
-
-setTimeout(() => {
-  // 🌫️ Fog overlay
-  const fog = document.createElement("div");
-  fog.style.position = "fixed";
-  fog.style.top = "0";
-  fog.style.left = "0";
-  fog.style.width = "100%";
-  fog.style.height = "100%";
-  fog.style.background = "url(https://images.rawpixel.com/dark_image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEwL3Jhd3BpeGVsX29mZmljZV8yNl9waG90b19vZl9hX2ZvZ19wbmdfaXNvbGF0ZWRfb25fYmxhY2tfYmFja2dyb19lNThlNTUzNy1jMjVmLTRiNjAtYmZkZC03NmQ1NDRjMmI4OTcucG5n.png') repeat";
-  fog.style.opacity = "0.3";
-  fog.style.zIndex = "999";
-  fog.style.pointerEvents = "none";
-  document.body.appendChild(fog);
-
-  // 🕷️ Spiders
-  for (let i = 0; i < 5; i++) {
-    const spider = document.createElement("img");
-    spider.src = "https://images.vexels.com/media/users/3/220602/isolated/preview/659989f1b774409dabd28c3734b7cc01-spider-eight-legged-silhouette.png";
-
-
-    setTimeout(() => {
-      spider.style.top = `${100 + i * 20}px`;
-      setTimeout(() => {
-        spider.style.top = `${-100 - i * 50}px`;
-      }, 3000);
-    }, 500);
-  }
-
-  // 🧙 Witches
-  for (let j = 0; j < 3; j++) {
-    const witch = document.createElement("img");
-    witch.src = "https://gallery.yopriceville.com/downloadfullsize/send/30015";
-    witch.alt = "Witch";
-    witch.style.position = "fixed";
-    witch.style.top = `${150 + j * 60}px`;
-    witch.style.left = "-200px";
-    witch.style.width = "120px";
-    witch.style.zIndex = "9999";
-    witch.style.transition = "left 5s linear";
-    document.body.appendChild(witch);
-
-    setTimeout(() => {
-      witch.style.left = "110%";
-    }, 100);
-  }
-
-  // 🧙‍♀️ Witch lands and casts spell
-  setTimeout(() => {
-    const landingWitch = document.createElement("img");
-    landingWitch.src = "https://media.silhouettedesignstore.com/media/catalog/product/s/i/si-halloween-witch-casting-spell_1756999240403.png";
-    landingWitch.alt = "Witch";
-    landingWitch.style.position = "absolute";
-    landingWitch.style.top = "600px";
-    landingWitch.style.left = "50%";
-    landingWitch.style.transform = "translateX(-50%)";
-    landingWitch.style.width = "140px";
-    landingWitch.style.zIndex = "9999";
-    landingWitch.style.transition = "opacity 1.5s ease-in-out";
-    document.body.appendChild(landingWitch);
-
-    // ✨ Sparkle spell effect
-    const sparkle = document.createElement("div");
-    sparkle.innerHTML = `
-      <div style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998;">
-        <div style="width:100%; height:100%; background:transparent;">
-          <div style="position
-
-                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
-            width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, #fff, rgba(255,255,255,0));
-            animation: sparklePulse 1.5s ease-in-out infinite;"></div>
-        </div>
-      </div>
-      <style>
-        @keyframes sparklePulse {
-          0% { opacity: 0.2; transform: scale(0.8); }
-          50% { opacity: 0.8; transform: scale(1.2); }
-          100% { opacity: 0.2; transform: scale(0.8); }
-        }
-      </style>
-    `;
-    document.body.appendChild(sparkle);
-
-    // ⬜ Fade to white
-    const whiteFade = document.createElement("div");
-    whiteFade.style.position = "fixed";
-    whiteFade.style.top = "0";
-    whiteFade.style.left = "0";
-    whiteFade.style.width = "100%";
-    whiteFade.style.height = "100%";
-    whiteFade.style.backgroundColor = "#fff";
-    whiteFade.style.zIndex = "9999";
-    whiteFade.style.opacity = "0";
-    whiteFade.style.transition = "opacity 2s ease-in-out";
-    document.body.appendChild(whiteFade);
-
-    setTimeout(() => {
-      whiteFade.style.opacity = "1";
-
-      // 🧙‍♀️ Witch vanishes
-      landingWitch.style.opacity = "0";
-      setTimeout(() => {
-        landingWitch.remove();
-        sparkle.remove();
-      }, 1500);
-
-      // 💀 Countdown Message with Skull
-      setTimeout(() => {
-        whiteFade.style.opacity = "0";
-        setTimeout(() => {
-          whiteFade.remove(); // ✅ Make page clickable again
-        }, 1000);
-
-        document.getElementById("countdown").style.display = "block";
-
-        const countdownMsg = document.createElement("div");
-        countdownMsg.innerHTML = `
-        <div id="countdown-label" style="text-align:center; font-size:1.5rem; color:orange; font-weight:bold; text-shadow:0 0 10px orange;">
-  ⏳ Countdown till Halloween 💀
-</div>
-<div id="countdown" style="text-align:center; font-size:1.2rem; color:orange; font-weight:bold; margin-top:10px;"></div>
- `;
-
- 
- const countdownTarget = new Date("2025-10-31T00:00:00");
-
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = countdownTarget.getTime() - now;
-
-  if (distance <= 0) {
-    document.getElementById("countdown").innerHTML = "🎃 Halloween Qantas Has Landed!";
-    activateHalloweenMode();
-    triggerJumpScare();
-    clearInterval(timer);
-    return;
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  document.getElementById("countdown").innerHTML =
-    `${days}d ${hours}h ${minutes}m ${seconds}s until Halloween Qantas lands`;
-}
-
-const timer = setInterval(updateCountdown, 1000);
-updateCountdown();
-
-
-        
-        document.getElementById("bookNowBtn").appendChild(countdownMsg);
-      }, 2000);
-    }, 1500);
-  }, 4000);
-}, 3200);
-
-
-
-
-
-</script>
-
-
-<!--  News Alert Pop-Up -->
-<div id="newsAlert" style="display:none;">
-  <div class="popup bounce" id="popupBox">
-    <div class="logo-banner">
-      <img src="https://logos-world.net/wp-content/uploads/2023/01/Qantas-Logo.png" class="logo" />
-      <span style="font-weight:bold;">×</span>
-      <img src="https://1000logos.net/wp-content/uploads/2020/04/Singapore-Airlines-Logo.png" class="logo" />
-    </div>
-
-    
-
-    <img src="https://assets.streamlinehq.com/image/private/w_512,h_512,ar_1/f_auto/v1/icons/1/airplane-n8b7yqbx56egkzsuwj0xel.png/airplane-ujfmhc9kta9qo5navlp2lm.png?_a=DATAg1AAZAA0" class="plane" />
-
-    <div id="progressBar"></div>
-
-    <h2>🚨 NEWS ALERT</h2>
-    <p><strong>Singapore Airlines × Qantas Airlines</strong></p>
-    <p>New partnership just landed. Double the skies, double the snacks.</p>
-
-    <p id="countdown" style="font-weight:bold; color:#d50000;"></p>
-
-    <label for="snack">Choose your in-flight snack:</label>
-    <select id="snack" onchange="snackReact()">
-      <option value="">-- Select --</option>
-      <option>Hot Cheetos</option>
-      <option>Sprite</option>
-      <option>Roblox Cookies</option>
-      <option>Air Salad</option>
-    </select>
-    <p id="snackReaction" style="font-weight:bold;"></p>
-
-    <div style="display:flex; justify-content:center; gap:10px; margin-top:20px;">
-      <a href="quiz.html"><button style="background:#000; color:#fff;">🧠 Take the Quiz</button></a>
-      <a href="learnmore.html" target="_blank"><button style="background:#0077cc; color:#fff;">📘 Learn More</button></a>
-      <button onclick="closeAlert()" style="background:#555; color:#fff;">❌ Close</button>
+  <div id="cookie-banner">
+    <div class="cookie-box">
+      <p>
+        Delta and our third-party partners access and store data on your device as necessary to provide this website and for analytics, enhanced functionality, and advertising.
+        <br><br>
+        <a href="terms-of-use.html" target="_blank">Terms of Use</a> • 
+        <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
+      </p>
+      <button onclick="acceptCookies()">I Understand</button>
     </div>
   </div>
-</div>
+
+  <header class="qantas-tab">
+    <div><strong>Qantas Roblox</strong></div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="checking.html">Manage Booking</a>
+      <a href="httpsa://discord.gg/5Z77R4TE">Discord</a>
+      <a href="">Menu</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div class="slide active"><img src="https://i.imgur.com/zLqZVO3.png" alt="Slide 1"></div>
+    <div class="slide"><img src="https://i.imgur.com/fe8vTZz.png" alt="Slide 2"></div>
+    <div class="slide"><img src="https://i.imgur.com/cwhwdY4.png" alt="Slide 3"></div>
+
+    <div class="hero-text">
+      <h1>Australia starts with Qantas Roblox</h1>
+      <p>Happy Halloween, from the "Spirit" of Australia 👻🎃</p>
+      <button onclick="showTab('book')">DISCOVER AUSTRALIA IN THE SKY</button>
+      <button id="unblurBtn" onclick="toggleBlur()">Unblur</button>
+    </div>
+
+    <div class="dots">
+      <span class="dot active" onclick="showSlide(0)"></span>
+      <span class="dot" onclick="showSlide(1)"></span>
+      <span class="dot" onclick="showSlide(2)"></span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('book')">Book a trip</div>
+    <div class="tab" onclick="showTab('status')">Flight status</div>
+    <div class="tab"><a href="flight-sta.html" style="text-decoration: none; color: inherit;">Flight Status | Beta (NEW)</a></div>
+    <div class="tab" onclick="showTab('credit')">Your Flight Credit</div>
+  </div>
+
+  <div id="book" class="tab-content active">
+    <h2>Available Flights</h2>
+    <div id="bookNowBtn"></div>
+  </div>
+
+  <div id="countdown"></div>
+  <p id="teaser">👻 Something spooky is landed... Qantas has gone full Halloween.</p>
+
+  <div id="status" class="tab-content">
+    <h2>Check Flight Status</h2>
+    <input id="bookingRef" type="text" placeholder="Enter Reference Code" />
+    <input id="lastName" type="text" placeholder="Enter Discord Name" />
+    <button onclick="checkBookingStatus()">Check Status</button>
+    <div id="statusInfo"></div>
+  </div>
+
+  <div id="credit" class="tab-content">
+    <div>
+      <h2 style="color:var(--accent-orange);">USE YOUR FLIGHT CREDIT</h2>
+      <input id="flightCreditCode" type="text" placeholder="Enter flight credit code" />
+      <button class="glow-btn" onclick="applyFlightCredit()">Apply Credit</button>
+      <div id="creditLoader" style="display:none;">⏳ Checking credit...</div>
+    </div>
+    <div id="creditFeedback"></div>
+  </div>
+
+  <!-- Help Launcher -->
+  <div id="help-launcher" onclick="openChat()">
+    <div>Help</div>
+    <div></div>
+  </div>
+
+  <!-- Chat Interface -->
+  <div id="chat-box">
+    <div>Qantas Assistant | BETA</div>
+    <div id="chat-log"></div>
+    <div>
+      <input type="text" id="chat-input" placeholder="Ask a question...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- News Alert Pop-Up -->
+  <!-- News Alert Pop-Up removed (duplicate) -->
+
+  <!-- 🚨 News Alert Pop-Up (single instance) -->
+  <div id="newsAlert" class="overlay" aria-hidden="true">
+    <div class="popup bounce" id="popupBox" role="dialog" aria-labelledby="newsTitle" aria-modal="true">
+      <div class="logo-banner">
+        <img src="https://1000logos.net/wp-content/uploads/2017/05/Qantas-Logo.png" class="logo" alt="Qantas logo"/>
+        <img src="https://1000logos.net/wp-content/uploads/2020/04/Singapore-Airlines-Logo.png" class="logo" alt="Singapore Airlines logo"/>
+      </div>
+
+      <img src="https://assets.streamlinehq.com/image/private/w_512,h_512,ar_1/f_auto/v1/icons/1/airplane-n8b7yqbx56egkzsuwj0xel.png/airplane-ujfmhc9kta9qo5navlp2lm.png?_a=DATAg1AAZAA0" class="plane" alt="plane"/>
+
+      <div id="progressBar" aria-hidden="true"></div>
+
+      <h2 id="newsTitle">🚨 NEWS ALERT</h2>
+      <p><strong>Singapore Airlines × Qantas Airlines</strong></p>
+      <p class="muted">New partnership just landed. Double the skies, double the snacks.</p>
+
+      <p id="countdown" class="countdown-text" aria-live="polite"></p>
+
+      <label for="snack">Choose your in-flight snack:</label>
+      <select id="snack" onchange="snackReact()">
+        <option value="">-- Select --</option>
+        <option>Hot Cheetos</option>
+        <option>Sprite</option>
+        <option>Roblox Cookies</option>
+        <option>Air Salad</option>
+      </select>
+      <p id="snackReaction" class="snack-reaction" aria-live="polite"></p>
+
+      <div class="popup-actions">
+        <a href="quiz.html"><button class="primary">🧠 Take the Quiz</button></a>
+        <a href="learnmore.html" target="_blank"><button class="secondary">📘 Learn More</button></a>
+        <button onclick="closeAlert()" class="close">❌ Close</button>
+      </div>
+    </div>
+  </div>
 
 <!-- 💅 Style -->
 <style>
   #progressBar {
-  height: 6px;
-  width: 0%;
-  background-color: #d50000;
-  border-radius: 3px;
-  margin-top: 20px;
-  transition: width 1s linear;
-}
+    height: 6px;
+    width: 0%;
+    background-color: #d50000;
+    border-radius: 3px;
+    margin-top: 20px;
+    transition: width 1s linear;
+  }
 
-body {
-  transition: background 0.5s ease;
-  background: #e0f7fa;
-}
+  body {
+    transition: background 0.5s ease;
+    background: #e0f7fa;
+  }
+  /* Overlay for the popup */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    background: rgba(0,0,0,0.45);
+    z-index: 9998;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
-.popup {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ffefef;
-  border: 3px solid #ff0000;
-  padding: 20px;
-  width: 360px;
-  z-index: 999;
-  box-shadow: 0 0 30px #ff0000;
-  font-family: 'Arial', sans-serif;
-  text-align: center;
-  animation: pulse 1s infinite;
-  transition: background 0.5s ease, color 0.5s ease;
-  border-radius: 20px;
-}
+  .overlay[style*="display: block"], .overlay.active {
+    display: flex;
+  }
 
-.popup.bounce {
-  animation: bounceIn 1s ease;
-}
+  .popup {
+    background: linear-gradient(180deg, #fffaf9 0%, #fff0f0 100%);
+    border: 2px solid rgba(213,0,0,0.95);
+    padding: 18px;
+    width: 100%;
+    max-width: 420px;
+    z-index: 9999;
+    box-shadow: 0 8px 30px rgba(213,0,0,0.18);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    border-radius: 14px;
+    transform-origin: center;
+  }
 
-@keyframes bounceIn {
-  0% { transform: scale(0.5) translateX(-50%); opacity: 0; }
-  60% { transform: scale(1.2) translateX(-50%); opacity: 1; }
-  80% { transform: scale(0.95) translateX(-50%); }
-  100% { transform: scale(1) translateX(-50%); }
-}
+  .popup.bounce {
+    animation: bounceIn 420ms cubic-bezier(.2,.9,.3,1);
+  }
 
-.popup h2 {
-  color: #ff0000;
-  margin-bottom: 10px;
-}
+  @keyframes bounceIn {
+    0% { transform: scale(.8) translateY(-8px); opacity: 0; }
+    60% { transform: scale(1.02) translateY(0); opacity: 1; }
+    100% { transform: scale(1) translateY(0); }
+  }
 
-.popup button {
-  padding: 8px 16px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 20px;
-}
+  .popup h2 { color: #b00020; margin: 10px 0 6px; font-size: 1.15rem; }
+  .popup .muted { color: #333; margin-bottom: 8px; }
 
-.plane {
-  width: 60px;
-  animation: land 2s ease-out forwards;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 2;
-}
+  .logo-banner { display:flex; gap:10px; justify-content:center; align-items:center; margin-bottom:8px; }
+  .logo { height: 34px; width: auto; }
 
-.logo-banner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
+  .plane { width: 56px; margin: 6px auto; display:block; animation: land 900ms ease-out both; }
 
-.logo {
-  height: 30px;
-}
+  @keyframes land { 0%{ transform: translateY(-30px) rotate(-6deg); opacity:0 } 70%{ transform: translateY(0) rotate(0); opacity:1 } 100%{ transform: translateY(2px) } }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 10px #ff0000; }
-  50% { box-shadow: 0 0 30px #ff0000; }
-  100% { box-shadow: 0 0 10px #ff0000; }
-}
+  #progressBar { height:6px; width:0%; background:#d50000; border-radius:3px; margin:10px auto 0; transition: width 0.8s linear; max-width:320px }
 
-@keyframes land {
-  0% { transform: translateY(-100px) rotate(-10deg); opacity: 0; }
-  50% { transform: translateY(0px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(5px); }
-}
+  label { display:block; margin-top:12px; font-weight:600; }
+  select { margin-top:6px; padding:8px 10px; border-radius:8px; border:1px solid #ccc; width:100%; max-width:260px }
+
+  .snack-reaction { font-weight:700; margin-top:8px }
+
+  .popup-actions { display:flex; gap:8px; justify-content:center; margin-top:18px; flex-wrap:wrap }
+  .popup-actions .primary { background:#000; color:#fff; border:none; padding:8px 14px; border-radius:12px }
+  .popup-actions .secondary { background:#0077cc; color:#fff; border:none; padding:8px 14px; border-radius:12px }
+  .popup-actions .close { background:#6b6b6b; color:#fff; border:none; padding:8px 14px; border-radius:12px }
+
+  .popup button { cursor:pointer; font-weight:700 }
+
+  /* Accessibility focus */
+  .popup button:focus, .popup select:focus { outline:3px solid rgba(0,123,255,0.25); outline-offset:2px }
+
+  /* small screens */
+  @media (max-width:420px) {
+    .popup { padding:14px; border-radius:10px }
+    .logo { height:28px }
+    .popup h2 { font-size:1rem }
+  }
 </style>
 
-<!-- Script -->
-
+<!-- 🧠 Script -->
 <script>
 function showPopup() {
   document.getElementById("newsAlert").style.display = "block";
@@ -1244,23 +237,21 @@ function showPopup() {
   startCountdown();
 
   const progressBar = document.getElementById("progressBar");
-progressBar.style.width = "0%";
+  progressBar.style.width = "0%";
 
-let progress = 0;
-const progressInterval = setInterval(() => {
-  progress += 100 / 70; // 70 seconds total
-  progressBar.style.width = `${progress}%`;
-  if (progress >= 100) clearInterval(progressInterval);
-}, 1000);
+  let progress = 0;
+  const progressInterval = setInterval(() => {
+    progress += 100 / 70;
+    progressBar.style.width = `${progress}%`;
+    if (progress >= 100) clearInterval(progressInterval);
+  }, 1000);
 
-
-  // Auto-close after 1 minute if not manually closed
   setTimeout(() => {
     const alertBox = document.getElementById("newsAlert");
     if (alertBox.style.display === "block") {
       alertBox.style.display = "none";
     }
-  }, 70000); // 60,000 ms = 1 minute
+  }, 70000);
 }
 
 function closeAlert() {
@@ -1298,72 +289,13 @@ function snackReact() {
   document.getElementById("snackReaction").innerText = reaction[snack] || "";
 }
 
-//  Show popup after 12.2 seconds, then every 30 minutes
 window.onload = function() {
-  setTimeout(showPopup, 12200); // show after 12.2 seconds
-  setInterval(showPopup, 1800000); // repeat every 30 minutes
+  setTimeout(showPopup, 12200);
+  setInterval(showPopup, 1800000);
 };
 </script>
 
 
-
-
-
-
-
-<script>
-let awayTimer;
-const awayLimit = 360000; // 1 minute
-
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    awayTimer = setTimeout(() => {
-      showAwayMessage();
-    }, awayLimit);
-  } else {
-    clearTimeout(awayTimer);
-  }
-});
-
-function showAwayMessage() {
-  const overlay = document.createElement("div");
-  overlay.id = "awayOverlay";
-  overlay.style.position = "fixed";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.width = "100%";
-  overlay.style.height = "100%";
-  overlay.style.background = "rgba(0,0,0,0.5)";
-  overlay.style.display = "flex";
-  overlay.style.alignItems = "center";
-  overlay.style.justifyContent = "center";
-  overlay.style.zIndex = "9999";
-
-  const box = document.createElement("div");
-  box.style.background = "#fff";
-  box.style.borderRadius = "30px";
-  box.style.padding = "40px";
-  box.style.textAlign = "center";
-  box.style.boxShadow = "0 0 20px rgba(0,0,0,0.3)";
-  box.style.maxWidth = "400px";
-  box.style.fontSize = "18px";
-  box.style.color = "#333";
-
-  box.innerHTML = `
-    <div style="font-size: 28px; margin-bottom: 20px;">⚠️</div>
-    <div>You’ve been away too long.<br>Reload for best experience.</div>
-    <button onclick="location.reload()" style="margin-top: 25px; padding: 10px 20px; font-size: 16px; background: #d50000; color: white; border: none; border-radius: 20px; cursor: pointer;">🔄 Reload</button>
-  `;
-
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-}
-</script>
-
-
-
-    
+  <script src="main.js"></script>
 </body>
-
-
+</html>
